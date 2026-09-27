@@ -2,9 +2,9 @@
 
 An installable web app (PWA) for following a sermon series day by day. It was built for the **30-week Romans series at Neighbors and Nations Church** and can be reused for any future series.
 
-- **Today:** today's ESV reading, this Sunday's sermon, last week's message, and your progress.
+- **Today:** today's reading, this Sunday's sermon and its passage, last week's message, and your progress.
 - **Weeks:** every sermon in the series. Each one has its date, passage, big idea, the pastor's video from before or after Sunday, the podcast episode, discussion questions, and the day-by-day reading plan.
-- **Reading view:** the ESV text, a reflection prompt, private notes, and a "mark as read" button.
+- **Reading view:** the Bible text with audio and links to the ESV and NIV, a reflection prompt, private notes, and a "mark as read" button.
 - **Listen:** the latest recorded message plus an archive of earlier ones (Spotify embeds).
 - **Settings:** a daily reminder, a calendar export of the whole plan, text size, install help, and a series switcher.
 
@@ -64,18 +64,19 @@ Everything lives in **`series/romans/series.json`**. All 31 sermons are filled i
 
 Check your edits with `npm run validate`.
 
-## Scripture text (ESV)
+## Scripture text and audio
 
-The text comes from the [ESV API](https://api.esv.org), which is free for non-commercial church use.
+**The Bible text is built into the app.** It uses the **Berean Standard Bible (BSB)**, a modern translation dedicated to the public domain in 2023, so the app needs no key, no license, and no approval. The text lives in `bible/bsb/`, one small file per book. The app downloads a book the first time someone opens a passage from it, and after that it works offline.
 
-1. Create an account at api.esv.org and register an application to get a key.
-2. Choose one option in `config.js`:
-   - **`proxyUrl` (recommended):** deploy `server/esv-proxy.worker.js` as a free Cloudflare Worker (steps are in the file). The key stays secret.
-   - **`apiKey`:** paste the key directly. It's quick, but anyone viewing the site source can see it.
+- **Listen:** each passage page has a *Listen* box.
+  - **Narrated audio:** whole-chapter BSB recordings, found through the free [Free Use Bible API](https://bible.helloao.org).
+  - **Read it aloud:** the phone's built-in voice reads the passage. This always works, even offline.
+- **Other translations:** every passage has **Also read in ESV · NIV** links, which open that passage on BibleGateway.
+- **Sunday's passage:** each sermon has a *Read & listen* page, linked from the Today screen and the week page, so people can read ahead even before the daily readings are written.
+- **Checking references:** write passages the usual way, e.g. `Romans 1:1-7`, `Romans 1:18-2:3`, `Psalm 98`, `Luke 1:5-25; 2:1-7`. Then run `npm run validate`, which flags any reference it can't understand.
+- **Rebuilding the text:** `node scripts/build-bible.mjs` regenerates `bible/bsb/` from the public BSB dataset.
 
-Until one of these is set, each reading shows a **"Read on ESV.org"** button instead of the text.
-
-The ESV terms limit how much text an app may store. This app keeps only the 20 most recent passages on the device for offline reading, and it shows Crossway's copyright notice wherever text appears.
+**Switching to the ESV later.** If Crossway approves an ESV API application, set `bible: 'ESV'` in `config.js` and add the key or proxy (see `server/esv-proxy.worker.js`). The ESV terms limit stored text, so in that mode the app keeps only the 20 most recent passages and shows Crossway's copyright notice.
 
 ## Reminders
 
@@ -128,11 +129,14 @@ Then add it to `series/index.json` and set `"active"` to it. Older series stay a
 
 ```
 index.html, manifest.webmanifest, sw.js   app shell, install metadata, offline cache
-config.js                                 app name, church, ESV settings
+config.js                                 app name, church, which Bible (BSB/ESV)
 series/index.json                         list of series + which is active
 series/romans/series.json                 the Romans plan (edit this)
 js/schedule.js                            date logic (unit-tested)
-js/esv.js, js/reminders.js, js/media.js   ESV fetch, reminders + .ics, video/Spotify embeds
+js/bible.js, js/reference.js, js/books.js BSB passages, reference parsing, book names
+js/audio.js                               narrated audio + read-aloud
+bible/bsb/                                the Berean Standard Bible, one JSON file per book
+js/esv.js, js/reminders.js, js/media.js   optional ESV, reminders + .ics, video/Spotify embeds
 js/views/*.js                             the five screens
 css/app.css                               styles (light + dark)
 icons/                                    app icons (npm run icons re-renders PNGs)

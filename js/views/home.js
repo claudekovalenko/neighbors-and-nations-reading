@@ -75,6 +75,7 @@ export function homeView(ctx) {
         <h2>${esc(weekHeading(cw))}</h2>
         ${cw.title && cw.passage ? `<p class="passage-sm">${esc(cw.passage)}</p>` : ''}
         ${cw.bigIdea ? `<blockquote class="big-idea">${esc(cw.bigIdea)}</blockquote>` : ''}
+        ${cw.passage ? `<a class="btn btn-primary" href="#/week/${cw.number}/passage">${icon('book')} Read &amp; listen to ${esc(cw.passage)}</a>` : ''}
         ${videoBlock(cw.videos?.before, 'A word from our pastor')}
         <a class="text-link" href="#/week/${cw.number}">See the week’s plan ${icon('chevron')}</a>
       </section>`);

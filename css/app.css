@@ -246,6 +246,17 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 .scripture .footnotes, .scripture .extra_text { display: none; }
 .scripture .btn { font-size: 1rem; }
 
+.listen { background: var(--surface-2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+.listen .eyebrow { display: flex; align-items: center; gap: 6px; }
+.listen .track { margin: 6px 0 10px; }
+.listen figcaption { font-weight: 600; font-size: .92rem; margin-bottom: 6px; }
+.listen audio { width: 100%; }
+.listen .btn { margin-top: 2px; }
+.btn-quiet { min-height: 38px; padding: 6px 14px; font-size: .9rem; }
+.also-read { font-size: .9rem; color: var(--muted); margin: -6px 0 18px; }
+.also-read a { display: inline-flex; align-items: center; gap: 3px; font-weight: 600; text-decoration: none; }
+.also-read .icon { width: .9em; height: .9em; }
+
 .notes textarea {
   width: 100%; margin-top: 4px; padding: 12px; font: 1rem/1.5 var(--sans); color: var(--ink);
   background: var(--surface); border: 1px solid var(--line); border-radius: 12px; resize: vertical;

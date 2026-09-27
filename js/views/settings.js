@@ -1,6 +1,6 @@
 import { settings, progress } from '../store.js';
 import { requestPermission, notificationsSupported, buildICS, downloadFile } from '../reminders.js';
-import { ESV_COPYRIGHT } from '../esv.js';
+import { BSB_NOTICE } from '../bible.js';
 import { config } from '../../config.js';
 import { esc, icon } from '../ui.js';
 
@@ -89,7 +89,7 @@ export function settingsView(ctx) {
 
       <footer class="about">
         <p><strong>${esc(config.appName)}</strong> · ${esc(config.church)}</p>
-        <p class="copyright">${esc(ESV_COPYRIGHT)}</p>
+        <p class="copyright">${esc(BSB_NOTICE)}</p>
       </footer>`,
 
     mount(root) {

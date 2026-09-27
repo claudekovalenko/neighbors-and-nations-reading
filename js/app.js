@@ -6,6 +6,7 @@ import { esc } from './ui.js';
 import { homeView } from './views/home.js';
 import { weeksListView, weekDetailView } from './views/weeks.js';
 import { dayView } from './views/day.js';
+import { passageView } from './views/passage.js';
 import { listenView } from './views/listen.js';
 import { settingsView } from './views/settings.js';
 
@@ -14,6 +15,7 @@ const routes = [
   [/^\/weeks$/, weeksListView, 'weeks'],
   [/^\/week\/(\d+)$/, weekDetailView, 'weeks'],
   [/^\/week\/(\d+)\/day\/(\d+)$/, dayView, 'weeks'],
+  [/^\/week\/(\d+)\/passage$/, passageView, 'weeks'],
   [/^\/listen$/, listenView, 'listen'],
   [/^\/settings$/, settingsView, 'settings'],
 ];
