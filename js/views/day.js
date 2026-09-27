@@ -1,12 +1,7 @@
 import { allDays } from '../schedule.js';
 import { progress, notes } from '../store.js';
-import { config } from '../../config.js';
-import { getPassageHtml, esvConfigured, ESV_COPYRIGHT } from '../esv.js';
-import { getPassage, passageHtml, passageText, passageChapters, otherTranslations, BSB_NOTICE } from '../bible.js';
-import { narratedAudio, speechSupported, speak, stopSpeaking } from '../audio.js';
+import { getPassageHtml, esvConfigured, esvLink, ESV_COPYRIGHT } from '../esv.js';
 import { esc, fmtLong, icon } from '../ui.js';
-
-const useESV = () => config.bible === 'ESV' && esvConfigured();
 
 function toggleLabel(done) {
   return done ? `${icon('check')} Read — tap to undo` : `${icon('check')} Mark as read`;
@@ -79,71 +74,39 @@ export function dayView(ctx, [wn, dn]) {
   };
 }
 
+// Scripture is ESV only. Until an ESV API key is set in config.js, the app
+// links to the passage on ESV.org (which also has audio); with a key, the
+// text appears right here.
 export function scriptureBlock(ref) {
+  const onEsvOrg = `<a class="btn btn-secondary" href="${esc(esvLink(ref))}" target="_blank" rel="noopener">${icon('listen')} Read &amp; listen on ESV.org ${icon('external')}</a>`;
+  if (!esvConfigured()) {
+    return `
+      <section class="card card-feature esv-out">
+        <p>Open ${esc(ref)} in the ESV. Tap play on ESV.org to listen.</p>
+        <a class="btn btn-primary" href="${esc(esvLink(ref))}" target="_blank" rel="noopener">${icon('book')} Read ${esc(ref)} (ESV) ${icon('external')}</a>
+      </section>`;
+  }
   return `
-    <section class="listen" id="listen" hidden>
-      <p class="eyebrow">${icon('listen')} Listen</p>
-      <div id="narrated"></div>
-      <button id="speak" class="btn btn-secondary" hidden>${icon('play')} Read it aloud</button>
-    </section>
     <article class="scripture" id="scripture" aria-live="polite">
       <p class="muted">Loading ${esc(ref)}…</p>
     </article>
-    <p class="also-read">Also read in
-      ${otherTranslations(ref).map(([name, url]) => `<a href="${esc(url)}" target="_blank" rel="noopener">${name} ${icon('external')}</a>`).join(' · ')}
-    </p>`;
+    <p class="also-read">${onEsvOrg}</p>`;
 }
 
-export const copyright = () => `<p class="copyright">${esc(useESV() ? ESV_COPYRIGHT : BSB_NOTICE)}</p>`;
+export const copyright = () => (esvConfigured() ? `<p class="copyright">${esc(ESV_COPYRIGHT)}</p>` : '');
 
 export function mountScripture(root, ref) {
   const target = root.querySelector('#scripture');
-  const fail = (err) => {
-    if (!target.isConnected) return;
-    target.innerHTML = !navigator.onLine
-      ? '<p class="muted">You’re offline, and this book hasn’t been saved on this device yet. Open it once while online and it will work offline after that.</p>'
-      : err.message === 'unrecognized-reference'
-        ? `<p class="muted">We couldn’t find “${esc(ref)}”. Use the links below to read it.</p>`
-        : `<p class="muted">We couldn’t load the passage right now (${esc(err.message)}).</p>`;
-  };
-
-  if (useESV()) {
-    getPassageHtml(ref).then((html) => { if (target.isConnected) target.innerHTML = html; }, fail);
-    return;
-  }
-  getPassage(ref).then((passage) => {
-    if (!target.isConnected) return;
-    target.innerHTML = passageHtml(passage);
-    setUpListening(root, passage);
-  }, fail);
-}
-
-function setUpListening(root, passage) {
-  const box = root.querySelector('#listen');
-  const speakBtn = root.querySelector('#speak');
-  if (speechSupported()) {
-    box.hidden = false;
-    speakBtn.hidden = false;
-    let speaking = false;
-    const label = () => (speakBtn.innerHTML = speaking ? `${icon('play')} Stop reading` : `${icon('play')} Read it aloud`);
-    speakBtn.addEventListener('click', () => {
-      speaking = !speaking;
-      if (speaking) speak(passageText(passage), { onEnd: () => { speaking = false; label(); } });
-      else stopSpeaking();
-      label();
-    });
-    // Stop talking when the reader leaves this screen.
-    window.addEventListener('hashchange', stopSpeaking, { once: true });
-  }
-
-  narratedAudio(passageChapters(passage)).then((tracks) => {
-    if (!tracks.length || !box.isConnected) return;
-    box.hidden = false;
-    root.querySelector('#narrated').innerHTML = tracks.map((t) => `
-      <figure class="track">
-        <figcaption>${esc(t.name)} ${t.chapter} <span class="muted">· narrated, whole chapter</span></figcaption>
-        <audio controls preload="none" src="${esc(t.url)}"></audio>
-      </figure>`).join('');
-    speakBtn.classList.add('btn-quiet');
-  });
+  if (!target) return;
+  getPassageHtml(ref).then(
+    (html) => { if (target.isConnected) target.innerHTML = html; },
+    (err) => {
+      if (!target.isConnected) return;
+      const why = !navigator.onLine
+        ? 'You’re offline, and this passage hasn’t been saved on this device yet.'
+        : `We couldn’t load the passage right now (${esc(err.message)}).`;
+      target.innerHTML = `<p class="muted">${why}</p>
+        <a class="btn btn-primary" href="${esc(esvLink(ref))}" target="_blank" rel="noopener">${icon('book')} Read ${esc(ref)} on ESV.org ${icon('external')}</a>`;
+    },
+  );
 }

@@ -93,7 +93,7 @@ export function weekDetailView(ctx, [n]) {
         ${week.preacher ? `<p class="muted">${esc(week.preacher)}</p>` : ''}
       </header>
 
-      ${week.passage ? `<a class="btn btn-primary" href="#/week/${week.number}/passage">${icon('book')} Read &amp; listen to ${esc(week.passage)}</a>` : ''}
+      ${week.passage ? `<a class="btn btn-primary" href="#/week/${week.number}/passage">${icon('book')} Read ${esc(week.passage)}</a>` : ''}
       ${week.bigIdea ? `<blockquote class="big-idea">${esc(week.bigIdea)}</blockquote>` : ''}
       ${week.summary ? `<p>${esc(week.summary)}</p>` : ''}
       ${videoBlock(week.videos?.before, 'Before Sunday · A word from our pastor')}

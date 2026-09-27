@@ -3,7 +3,7 @@ import { esc, fmtLong, icon } from '../ui.js';
 import { scriptureBlock, mountScripture, copyright } from './day.js';
 import { weekHeading } from './weeks.js';
 
-// The Sunday sermon passage itself, to read and listen to ahead of time.
+// The Sunday sermon passage itself, to read ahead of time.
 export function passageView(ctx, [wn]) {
   const { series, schedule } = ctx;
   const week = schedule[Number(wn) - 1];

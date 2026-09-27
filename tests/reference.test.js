@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { parseReference } from '../js/reference.js';
 import { BOOKS, findBook } from '../js/books.js';
 
@@ -29,32 +29,11 @@ test('book table covers all 66 books with unique codes', () => {
   assert.equal(findBook('Revelation').code, 'REV');
 });
 
-test('bundled BSB text is complete and matches known verses', () => {
-  const files = readdirSync('bible/bsb');
-  assert.equal(files.length, 66);
-  const rom = JSON.parse(readFileSync('bible/bsb/ROM.json', 'utf8'));
-  assert.equal(rom.chapters.length, 16);
-  assert.equal(rom.chapters[9].length, 21);
-  assert.match(rom.chapters[0][15], /^I am not ashamed of the gospel, because it is the power of God for salvation/);
-  const jhn = JSON.parse(readFileSync('bible/bsb/JHN.json', 'utf8'));
-  assert.match(jhn.chapters[2][15], /^For God so loved the world/);
-});
-
-test('every passage in every series resolves to real verses', () => {
+test('every passage in every series is a reference ESV.org understands', () => {
   const index = JSON.parse(readFileSync('series/index.json', 'utf8'));
-  const cache = {};
-  const book = (code) => (cache[code] ??= JSON.parse(readFileSync(`bible/bsb/${code}.json`, 'utf8')));
   for (const entry of index.series) {
     const series = JSON.parse(readFileSync(entry.path, 'utf8'));
     const refs = series.weeks.flatMap((w) => [w.passage, ...(w.days ?? []).map((d) => d.passage)]).filter(Boolean);
-    for (const ref of refs) {
-      const segs = parseReference(ref);
-      assert.ok(segs, `${entry.id}: can't parse "${ref}"`);
-      for (const s of segs) {
-        const ch = book(s.book.code).chapters[s.chapter - 1];
-        assert.ok(ch, `${entry.id}: "${ref}" — no chapter ${s.chapter}`);
-        assert.ok(s.from <= ch.length && (s.to ?? 0) <= ch.length, `${entry.id}: "${ref}" — verse out of range`);
-      }
-    }
+    for (const ref of refs) assert.ok(parseReference(ref), `${entry.id}: can't parse "${ref}"`);
   }
 });

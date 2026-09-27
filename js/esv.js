@@ -22,7 +22,7 @@ export function esvConfigured() {
 }
 
 export function esvLink(ref) {
-  return `https://www.esv.org/${encodeURIComponent(ref).replace(/%20/g, '+')}/`;
+  return `https://www.esv.org/${encodeURIComponent(ref).replace(/%20/g, '+').replace(/%3A/gi, ':')}/`;
 }
 
 export async function getPassageHtml(ref) {
