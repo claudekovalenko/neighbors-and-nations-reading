@@ -1,15 +1,12 @@
-import { locate } from '../schedule.js';
 import { esc, fmtLong, fmtShort, icon, spotifyBlock } from '../ui.js';
 import { weekHeading } from './weeks.js';
 
 export function listenView(ctx) {
   const { series, schedule } = ctx;
-  const loc = locate(schedule);
   const pod = series.podcast ?? {};
 
   const recorded = schedule.filter((w) => w.podcastEpisodeUrl).reverse();
   const latest = recorded[0];
-  const pending = schedule.filter((w) => !w.podcastEpisodeUrl && w.sermonDate < loc.today);
 
   const links = [
     pod.spotifyShowUrl && `<a class="btn btn-primary" href="${esc(pod.spotifyShowUrl)}" target="_blank" rel="noopener">${icon('listen')} Follow on Spotify</a>`,
@@ -60,7 +57,6 @@ export function listenView(ctx) {
           <ol class="episode-list">${archive.join('')}</ol>
         </section>` : ''}
 
-      ${pending.length ? `<p class="muted">Recordings for week${pending.length > 1 ? 's' : ''} ${pending.map((w) => w.number).join(', ')} are on the way.</p>` : ''}
 
       ${pod.spotifyShowUrl ? spotifyBlock(pod.spotifyShowUrl) : ''}`,
   };

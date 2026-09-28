@@ -1,4 +1,4 @@
-import { locate, sameDay, resumesAfterBreak } from '../schedule.js';
+import { locate, resumesAfterBreak } from '../schedule.js';
 import { notes } from '../store.js';
 import { esc, fmtLong, fmtShort, icon, videoBlock, spotifyBlock } from '../ui.js';
 import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
@@ -60,7 +60,6 @@ export function weekDetailView(ctx, [n]) {
   const week = schedule[Number(n) - 1];
   if (!week) return null;
   const loc = locate(schedule);
-  const preached = week.sermonDate < loc.today || sameDay(week.sermonDate, loc.today);
   const prev = schedule[week.number - 2];
   const next = schedule[week.number];
   const noteId = `w${week.number}`;
@@ -83,7 +82,7 @@ export function weekDetailView(ctx, [n]) {
       ${week.summary ? `<p>${esc(week.summary)}</p>` : ''}
       ${videoBlock(week.videos?.before, 'A word from our pastor')}
 
-      ${week.podcastEpisodeUrl ? `<section><h2 class="section-title">Listen to the message</h2>${spotifyBlock(week.podcastEpisodeUrl)}</section>` : preached ? '<p class="muted">The recording will be posted soon.</p>' : ''}
+      ${week.podcastEpisodeUrl ? `<section><h2 class="section-title">Listen to the message</h2>${spotifyBlock(week.podcastEpisodeUrl)}</section>` : ''}
       ${videoBlock(week.videos?.after, 'After the message')}
 
       ${week.questions?.length ? `

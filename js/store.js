@@ -43,6 +43,13 @@ export const progress = {
   isDone(seriesId, dayId) {
     return Boolean(this.all(seriesId)[dayId]);
   },
+  markDone(seriesId, dayId) {
+    const all = this.all(seriesId);
+    if (!all[dayId]) {
+      all[dayId] = new Date().toISOString();
+      write(`progress:${seriesId}`, all);
+    }
+  },
   toggle(seriesId, dayId) {
     const all = this.all(seriesId);
     if (all[dayId]) delete all[dayId];

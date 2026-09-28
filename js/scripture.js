@@ -4,7 +4,7 @@ import { getPassageHtml, esvConfigured, esvLink, ESV_COPYRIGHT } from './esv.js'
 import { esc, icon } from './ui.js';
 
 export function scriptureBlock(ref) {
-  const button = `<a class="btn btn-primary" href="${esc(esvLink(ref))}" target="_blank" rel="noopener">${icon('book')} Read ${esc(ref)}</a>`;
+  const button = `<a class="btn btn-primary read-link" href="${esc(esvLink(ref))}" target="_blank" rel="noopener">${icon('book')} Read ${esc(ref)}</a>`;
   if (!esvConfigured()) return button;
   return `<article class="scripture" id="scripture" data-ref="${esc(ref)}" aria-live="polite"><p class="muted">Loading ${esc(ref)}…</p></article>`;
 }
@@ -19,7 +19,7 @@ export function mountScripture(root) {
     (html) => { if (target.isConnected) target.innerHTML = html; },
     () => {
       if (!target.isConnected) return;
-      target.outerHTML = `<a class="btn btn-primary" href="${esc(esvLink(ref))}" target="_blank" rel="noopener">${icon('book')} Read ${esc(ref)}</a>`;
+      target.outerHTML = `<a class="btn btn-primary read-link" href="${esc(esvLink(ref))}" target="_blank" rel="noopener">${icon('book')} Read ${esc(ref)}</a>`;
     },
   );
 }
