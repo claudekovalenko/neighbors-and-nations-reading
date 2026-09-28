@@ -102,7 +102,7 @@ function render({ keepScroll = false } = {}) {
   });
 
   if (!keepScroll && path !== lastPath) {
-    window.scrollTo(0, 0);
+    main.scrollTo(0, 0); // main is the scrolling area, not the window
     main.focus({ preventScroll: true });
   }
   lastPath = path;

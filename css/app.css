@@ -49,16 +49,22 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-/* Reserve the scrollbar's space on every page, so the tab bar doesn't shift
-   between short screens (Today) and long ones that scroll. */
-html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
+html { -webkit-text-size-adjust: 100%; height: 100%; }
 
+/* App-style layout: app bar on top, tab bar on the bottom, and only the
+   middle (main) scrolls. Nothing is position:fixed, so the tab bar sits in
+   exactly the same place on every screen, whether or not the page is long
+   enough to scroll, and mobile browser toolbars can't push it around. */
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font: 16px/1.55 var(--sans);
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 a { color: var(--accent-ink); }
@@ -75,10 +81,8 @@ p { margin: 0 0 .8em; }
 /* ---------- app bar & tab bar ---------- */
 
 .appbar {
-  position: sticky; top: 0; z-index: 5;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: saturate(1.4) blur(10px);
-  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  flex: none;
+  background: var(--bg);
   border-bottom: 1px solid var(--line);
   padding: calc(8px + env(safe-area-inset-top)) 16px 8px;
 }
@@ -89,7 +93,7 @@ p { margin: 0 0 .8em; }
 .appbar-brand small { color: var(--muted); font-size: .75rem; }
 
 .tabbar {
-  position: fixed; inset: auto 0 0 0; z-index: 5;
+  flex: none;
   display: grid; grid-template-columns: repeat(3, 1fr);
   height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
@@ -105,7 +109,16 @@ p { margin: 0 0 .8em; }
 .tabbar a[aria-current] { color: var(--ink); }
 .tabbar a[aria-current] .icon { color: var(--accent); }
 
-main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none; }
+main {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  /* Content column is at most 680px wide, centered. */
+  padding: 20px max(16px, calc((100% - 648px) / 2)) 32px;
+  outline: none;
+}
 
 /* ---------- building blocks ---------- */
 

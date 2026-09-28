@@ -51,13 +51,18 @@ const measure = (page) =>
       return { left: box.left, width: box.width, iconTop: icon.top, iconLeft: icon.left };
     });
     const doc = document.documentElement;
+    const main = document.querySelector('main');
     const targets = [...document.querySelectorAll('main a, main button, main summary, main select, main input[type=time], main label.switch')]
       .filter((el) => el.offsetParent && !el.closest('p')) // skip links inside sentences
       .map((el) => ({ what: `${el.tagName.toLowerCase()} "${el.textContent.trim().slice(0, 30)}"`, h: r(el).height, w: r(el).width }))
       .filter((t) => t.h < 44 || t.w < 44);
     return {
       barTop: bar.top, barBottom: bar.bottom, barHeight: bar.height, viewportHeight: innerHeight,
-      tabs, overflow: doc.scrollWidth - doc.clientWidth, smallTargets: targets,
+      tabs, smallTargets: targets,
+      overflow: Math.max(doc.scrollWidth - doc.clientWidth, main.scrollWidth - main.clientWidth),
+      // Only main should scroll; if the page itself scrolls, mobile browsers
+      // move the bottom bar around.
+      pageScrolls: doc.scrollHeight - doc.clientHeight,
     };
   });
 
@@ -68,6 +73,7 @@ for (const [name, hash] of SCREENS) {
     const m = await measure(page);
 
     expect(m.overflow, 'page is wider than the screen').toBeLessThanOrEqual(0);
+    expect(m.pageScrolls, 'the whole page scrolls (only the middle should)').toBeLessThanOrEqual(0);
     expect(m.barBottom, 'bottom bar is not flush with the bottom of the screen').toBeCloseTo(m.viewportHeight, 0);
     expect(m.smallTargets, 'buttons/links smaller than 44px are hard to tap').toEqual([]);
     expect(errors, 'errors on the page').toEqual([]);
@@ -91,6 +97,21 @@ test('bottom bar is identical on every screen', async ({ page }) => {
       expect.soft(t.iconLeft, `${s.name}: tab ${i + 1} icon moved sideways`).toBeCloseTo(seen[0].tabs[i].iconLeft, 0);
       expect.soft(t.iconTop, `${s.name}: tab ${i + 1} icon moved up/down`).toBeCloseTo(seen[0].tabs[i].iconTop, 0);
     });
+  }
+});
+
+test('bottom bar stays put when scrolling a long page, and hides nothing', async ({ page }) => {
+  await open(page, '#/');
+  const today = await measure(page);
+  for (const hash of ['#/weeks', '#/settings']) {
+    await open(page, hash);
+    await page.locator('main').evaluate((m) => m.scrollTo(0, m.scrollHeight));
+    await page.waitForTimeout(200);
+    const m = await measure(page);
+    expect(m.barTop, `${hash}: bar moved after scrolling`).toBeCloseTo(today.barTop, 0);
+    expect(m.barBottom, `${hash}: bar not at the bottom after scrolling`).toBeCloseTo(m.viewportHeight, 0);
+    const lastBottom = await page.locator('main').evaluate((main) => main.lastElementChild.getBoundingClientRect().bottom);
+    expect(lastBottom, `${hash}: last item is hidden behind the bottom bar`).toBeLessThanOrEqual(m.barTop + 1);
   }
 });
 
