@@ -1,5 +1,12 @@
 name: Test & deploy
 
+# Every update is checked before it can go live:
+#   test    — unit tests + series file checks
+#   devices — the app on simulated Android phones (Chrome engine), iPhones
+#             and iPad (Safari engine) and desktop; screenshots of every
+#             screen are saved in the "device-report" download on the run.
+#   deploy  — publishes to GitHub Pages, only from main and only if both pass.
+
 on:
   push:
     branches: [main]
@@ -12,7 +19,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -26,11 +33,28 @@ jobs:
       - run: npm test
       - run: npm run validate
 
+  devices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: device-report
+          path: playwright-report/
+          retention-days: 30
+
   deploy:
-    # Publishes the site to GitHub Pages on every push to main.
     # One-time setup: repo Settings → Pages → Source: "GitHub Actions".
-    if: github.event_name != 'pull_request'
-    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: [test, devices]
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -190,7 +190,7 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 .row-chevron { color: var(--muted); }
 
 .tracker { margin: 10px 0 4px; }
-.dots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.dots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; }
 .dot {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
   background: none; border: 0; padding: 0; font: inherit; color: var(--muted); cursor: pointer;

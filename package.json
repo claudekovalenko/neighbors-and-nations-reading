@@ -2,13 +2,17 @@
   "name": "sermon-series",
   "version": "0.1.0",
   "private": true,
-  "description": "Installable web app (PWA) for following a church sermon series day by day — built for Romans at Neighbors and Nations Church.",
+  "description": "Installable web app (PWA) for following a church sermon series day by day \u2014 built for Romans at Neighbors and Nations Church.",
   "type": "module",
   "scripts": {
-    "start": "npx --yes serve -l 8080 .",
+    "start": "node scripts/serve.mjs 8080",
     "test": "node --test",
     "validate": "node scripts/validate.mjs",
     "new-series": "node scripts/new-series.mjs",
-    "icons": "node scripts/render-icons.mjs"
+    "icons": "node scripts/render-icons.mjs",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
   }
 }
