@@ -159,10 +159,6 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 
 .pill { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; background: var(--accent); color: #fff; padding: 3px 8px; border-radius: 999px; }
 
-.progress { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-top: 6px; }
-.progress span { display: block; height: 100%; background: var(--done); border-radius: inherit; }
-.card-quiet .progress { background: var(--line); }
-
 /* ---------- media ---------- */
 
 .media { margin: 16px 0; }
@@ -174,7 +170,7 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 
 /* ---------- week & day lists ---------- */
 
-.week-list, .day-list, .episode-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.week-list, .episode-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 
 .week-row, .episode summary {
   display: flex; align-items: center; gap: 14px;
@@ -198,23 +194,23 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 .week-sub { font-size: .9rem; color: var(--ink-2); }
 .row-chevron { color: var(--muted); }
 
-.day-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-  color: inherit; text-decoration: none;
+.tracker { margin: 16px 0 4px; }
+.tracker-label { font-size: .85rem; color: var(--muted); margin-bottom: 8px; }
+.dots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.dot {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: none; border: 0; padding: 0; font: inherit; color: var(--muted); cursor: pointer;
 }
-.day-row.is-today { border-color: var(--accent); }
-.day-check {
-  flex: none; width: 26px; height: 26px; border-radius: 50%;
-  border: 2px solid var(--line); display: grid; place-items: center; color: #fff;
+.dot:disabled { cursor: default; opacity: .55; }
+.dot-mark {
+  width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--line);
+  display: grid; place-items: center; color: #fff;
 }
-.day-row.is-done .day-check { background: var(--done); border-color: var(--done); }
-.day-check .icon { width: 16px; height: 16px; }
-.day-date { flex: none; width: 52px; font-size: .78rem; color: var(--muted); line-height: 1.25; }
-.day-date strong { color: var(--ink-2); }
-.day-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.day-passage { font-family: var(--serif); font-weight: 600; }
-.day-title { font-size: .88rem; color: var(--ink-2); }
+.dot-mark .icon { width: 18px; height: 18px; }
+.dot.is-today .dot-mark { border-color: var(--accent); }
+.dot.is-today .dot-day { color: var(--ink); font-weight: 700; }
+.dot.is-done .dot-mark { background: var(--done); border-color: var(--done); }
+.dot-day { font-size: .75rem; }
 
 .questions { padding-left: 1.3em; }
 .questions li { margin-bottom: .6em; }
@@ -249,6 +245,7 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 .also-read { margin: -4px 0 18px; }
 .esv-out .btn { margin-top: 4px; }
 
+.notes { margin-top: 24px; }
 .notes textarea {
   width: 100%; margin-top: 4px; padding: 12px; font: 1rem/1.5 var(--sans); color: var(--ink);
   background: var(--surface); border: 1px solid var(--line); border-radius: 12px; resize: vertical;

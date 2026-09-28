@@ -42,7 +42,7 @@ export async function checkReminder({ series, readings, now = new Date() }) {
     icon: 'icons/icon-192.png',
     badge: 'icons/icon-192.png',
     tag: `reading-${todayISO}`,
-    data: { url: `#/week/${day.weekNumber}/day/${day.index}` },
+    data: { url: `#/week/${day.weekNumber}` },
   });
   settings.set({ lastNotified: todayISO });
 }
@@ -109,10 +109,10 @@ export function buildICS({ series, schedule, time, appUrl, from = new Date(), se
         at: time,
         minutes: 15,
         summary: `${series.title}: ${day.passage || `Week ${week.number}, Day ${day.index}`}`,
-        description: [day.title, day.prompt, `Read in the app: ${appUrl}#/week/${week.number}/day/${day.index}`]
+        description: [day.title, day.prompt, `Open the app: ${appUrl}#/week/${week.number}`]
           .filter(Boolean)
           .join('\n\n'),
-        url: `${appUrl}#/week/${week.number}/day/${day.index}`,
+        url: `${appUrl}#/week/${week.number}`,
         alarm: true,
       });
     }

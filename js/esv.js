@@ -21,8 +21,10 @@ export function esvConfigured() {
   return Boolean(config.esv.proxyUrl || config.esv.apiKey);
 }
 
+// BibleGateway shows exactly the verses asked for (ESV.org scrolls through
+// the whole book around them).
 export function esvLink(ref) {
-  return `https://www.esv.org/${encodeURIComponent(ref).replace(/%20/g, '+').replace(/%3A/gi, ':')}/`;
+  return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV`;
 }
 
 export async function getPassageHtml(ref) {

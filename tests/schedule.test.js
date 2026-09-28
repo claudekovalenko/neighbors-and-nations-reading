@@ -103,3 +103,12 @@ test('Romans dates match the church calendar, including breaks', async () => {
   assert.equal(dates[31], '2027-10-24');
   assert.deepEqual(s.filter((w) => resumesAfterBreak(s, w)).map((w) => w.number), [11, 21]);
 });
+
+test('each reading day uses its week’s passage unless it sets its own', () => {
+  const s = buildSchedule({
+    ...series,
+    weeks: [{ passage: 'Romans 1:1-7', days: [{}, { passage: 'Psalm 98' }] }, { days: [{}] }],
+  });
+  assert.deepEqual(s[0].days.map((d) => d.passage), ['Romans 1:1-7', 'Psalm 98']);
+  assert.equal(s[1].days[0].passage, '');
+});

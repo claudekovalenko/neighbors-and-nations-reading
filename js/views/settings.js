@@ -1,6 +1,6 @@
 import { settings, progress } from '../store.js';
 import { requestPermission, notificationsSupported, buildICS, downloadFile } from '../reminders.js';
-import { ESV_COPYRIGHT } from '../esv.js';
+import { ESV_COPYRIGHT, esvConfigured } from '../esv.js';
 import { config } from '../../config.js';
 import { esc, icon } from '../ui.js';
 
@@ -60,7 +60,7 @@ export function settingsView(ctx) {
 
       <section class="card">
         <h2 class="section-title">${icon('calendar')} Add to your calendar</h2>
-        <p>Puts every remaining reading on your phone’s calendar with an alert at your reminder time.</p>
+        <p>Adds a daily reminder to read this week’s passage to your phone’s calendar, with an alert at your reminder time.</p>
         <label class="switch">
           <input type="checkbox" id="ics-sermons" checked>
           <span>Include Sunday sermons</span>
@@ -68,13 +68,13 @@ export function settingsView(ctx) {
         <button id="ics" class="btn btn-secondary">${icon('calendar')} Download calendar file</button>
       </section>
 
-      <section class="card">
+      ${esvConfigured() ? `<section class="card">
         <h2 class="section-title">Reading text size</h2>
         <div class="segmented" role="radiogroup" aria-label="Text size">
           ${['s', 'm', 'l', 'xl'].map((k) => `
             <label><input type="radio" name="size" value="${k}" ${s.textSize === k ? 'checked' : ''}><span>${{ s: 'Small', m: 'Medium', l: 'Large', xl: 'Larger' }[k]}</span></label>`).join('')}
         </div>
-      </section>
+      </section>`: ''}
 
       <section class="card">
         <h2 class="section-title">Get the app</h2>
@@ -89,7 +89,7 @@ export function settingsView(ctx) {
 
       <footer class="about">
         <p><strong>${esc(config.appName)}</strong> · ${esc(config.church)}</p>
-        <p class="copyright">${esc(ESV_COPYRIGHT)}</p>
+        ${esvConfigured() ? `<p class="copyright">${esc(ESV_COPYRIGHT)}</p>` : '<p>Scripture: ESV</p>'}
       </footer>`,
 
     mount(root) {

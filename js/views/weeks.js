@@ -1,6 +1,8 @@
 import { locate, sameDay, resumesAfterBreak } from '../schedule.js';
-import { progress } from '../store.js';
-import { esc, fmtLong, fmtShort, fmtWeekday, icon, videoBlock, spotifyBlock, progressBar } from '../ui.js';
+import { notes } from '../store.js';
+import { esc, fmtLong, fmtShort, icon, videoBlock, spotifyBlock } from '../ui.js';
+import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
+import { trackerHtml, mountTracker } from '../tracker.js';
 
 export function weekHeading(week) {
   return week.title || week.passage || `Week ${week.number}`;
@@ -25,7 +27,6 @@ export function weeksListView(ctx) {
   };
 
   const items = schedule.map((w) => {
-    const done = w.days.filter((d) => progress.isDone(series.id, d.id)).length;
     const current = loc.currentWeek?.number === w.number;
     const past = w.sermonDate < loc.today;
     const sub = w.title && w.passage ? w.passage : w.title || w.passage ? '' : 'Passage coming soon';
@@ -37,7 +38,6 @@ export function weeksListView(ctx) {
             <span class="week-date">${esc(fmtShort(w.sermonDate))}${current ? ' · This week' : ''}</span>
             <span class="week-title">${esc(weekHeading(w))}</span>
             ${sub ? `<span class="week-sub">${esc(sub)}</span>` : ''}
-            ${w.days.length ? progressBar(done, w.days.length, `Week ${w.number} progress`) : ''}
           </span>
           ${icon('chevron', 'row-chevron')}
         </a>
@@ -49,7 +49,7 @@ export function weeksListView(ctx) {
     html: `
       <header class="page-head">
         <p class="eyebrow">${esc(series.title)} · ${schedule.length} weeks</p>
-        <h1>Sermon by sermon</h1>
+        <h1>All weeks</h1>
       </header>
       <ol class="week-list">${items.join('')}</ol>`,
   };
@@ -61,50 +61,30 @@ export function weekDetailView(ctx, [n]) {
   if (!week) return null;
   const loc = locate(schedule);
   const preached = week.sermonDate < loc.today || sameDay(week.sermonDate, loc.today);
-
-  const days = week.days.map((d) => {
-    const done = progress.isDone(series.id, d.id);
-    const today = sameDay(d.date, loc.today);
-    return `
-      <li>
-        <a class="day-row ${done ? 'is-done' : ''} ${today ? 'is-today' : ''}" href="#/week/${week.number}/day/${d.index}">
-          <span class="day-check" aria-label="${done ? 'Read' : 'Not read yet'}">${done ? icon('check') : ''}</span>
-          <span class="day-date"><strong>${esc(fmtWeekday(d.date))}</strong><br>${esc(fmtShort(d.date))}</span>
-          <span class="day-body">
-            <span class="day-passage">${esc(d.passage || 'Coming soon')}</span>
-            ${d.title ? `<span class="day-title">${esc(d.title)}</span>` : ''}
-          </span>
-          ${today ? '<span class="pill">Today</span>' : ''}
-        </a>
-      </li>`;
-  });
-
   const prev = schedule[week.number - 2];
   const next = schedule[week.number];
+  const noteId = `w${week.number}`;
 
   return {
     title: `Week ${week.number}`,
     html: `
       <a class="back-link" href="#/weeks">${icon('back')} All weeks</a>
       <header class="page-head">
-        <p class="eyebrow">Week ${week.number} of ${schedule.length} · ${esc(fmtLong(week.sermonDate))}</p>
-        <h1>${esc(weekHeading(week))}</h1>
-        ${week.title && week.passage ? `<p class="passage-sm">${esc(week.passage)}</p>` : ''}
+        <p class="eyebrow">Week ${week.number} · ${esc(fmtLong(week.sermonDate))}</p>
+        <h1 class="passage">${esc(week.passage || weekHeading(week))}</h1>
+        ${week.title && week.passage ? `<p class="lead">${esc(week.title)}</p>` : ''}
         ${week.preacher ? `<p class="muted">${esc(week.preacher)}</p>` : ''}
       </header>
 
-      ${week.passage ? `<a class="btn btn-primary" href="#/week/${week.number}/passage">${icon('book')} Read ${esc(week.passage)}</a>` : ''}
+      ${week.passage ? scriptureBlock(week.passage) : '<p class="muted">Passage coming soon.</p>'}
+      ${trackerHtml(series, week, loc.today)}
+
       ${week.bigIdea ? `<blockquote class="big-idea">${esc(week.bigIdea)}</blockquote>` : ''}
       ${week.summary ? `<p>${esc(week.summary)}</p>` : ''}
-      ${videoBlock(week.videos?.before, 'Before Sunday · A word from our pastor')}
-
-      <section>
-        <h2 class="section-title">Daily readings</h2>
-        ${days.length ? `<ol class="day-list">${days.join('')}</ol>` : '<p class="muted">Readings coming soon.</p>'}
-      </section>
+      ${videoBlock(week.videos?.before, 'A word from our pastor')}
 
       ${week.podcastEpisodeUrl ? `<section><h2 class="section-title">Listen to the message</h2>${spotifyBlock(week.podcastEpisodeUrl)}</section>` : preached ? '<p class="muted">The recording will be posted soon.</p>' : ''}
-      ${videoBlock(week.videos?.after, 'After the message · Keep thinking about it')}
+      ${videoBlock(week.videos?.after, 'After the message')}
 
       ${week.questions?.length ? `
         <section>
@@ -112,9 +92,25 @@ export function weekDetailView(ctx, [n]) {
           <ol class="questions">${week.questions.map((q) => `<li>${esc(q)}</li>`).join('')}</ol>
         </section>` : ''}
 
+      <section class="notes">
+        <label class="eyebrow" for="note">My notes <span class="muted">(saved on this device)</span></label>
+        <textarea id="note" rows="4" placeholder="What stood out? What do you want to remember?">${esc(notes.get(series.id, noteId))}</textarea>
+      </section>
+
       <nav class="pager" aria-label="Weeks">
         ${prev ? `<a href="#/week/${prev.number}">${icon('back')} Week ${prev.number}</a>` : '<span></span>'}
         ${next ? `<a href="#/week/${next.number}">Week ${next.number} ${icon('chevron')}</a>` : '<span></span>'}
-      </nav>`,
+      </nav>
+      ${copyright()}`,
+
+    mount(root) {
+      mountScripture(root);
+      mountTracker(root, ctx);
+      let t;
+      root.querySelector('#note').addEventListener('input', (e) => {
+        clearTimeout(t);
+        t = setTimeout(() => notes.set(series.id, noteId, e.target.value.trim() ? e.target.value : ''), 400);
+      });
+    },
   };
 }

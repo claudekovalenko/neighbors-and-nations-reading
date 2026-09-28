@@ -2,9 +2,8 @@
 
 An installable web app (PWA) for following a sermon series day by day. It was built for the **30-week Romans series at Neighbors and Nations Church** and can be reused for any future series.
 
-- **Today:** today's reading, this Sunday's sermon and its passage (ESV), last week's message, and your progress.
+- **Today:** this week's passage with a **Read** button (ESV, only those verses), Mon–Sat check-offs for reading it each day before Sunday, and last week's message.
 - **Weeks:** every sermon in the series. Each one has its date, passage, big idea, the pastor's video from before or after Sunday, the podcast episode, discussion questions, and the day-by-day reading plan.
-- **Reading view:** the ESV passage, a reflection prompt, private notes, and a "mark as read" button.
 - **Listen:** the latest recorded message plus an archive of earlier ones (Spotify embeds).
 - **Settings:** a daily reminder, a calendar export of the whole plan, text size, install help, and a series switcher.
 
@@ -16,7 +15,7 @@ There's no build step: it's plain HTML, CSS, and JavaScript modules, so any stat
 
 ## Filling in the Romans plan
 
-Everything lives in **`series/romans/series.json`**. All 31 sermons are filled in from the church's *Sermon Series Proposal Fall 2026 – 2027*: dates, passages, the three parts, and speakers where known. The **daily readings are still blank**, and each shows "Coming soon" until you add it.
+Everything lives in **`series/romans/series.json`**. All 31 sermons are filled in from the church's *Sermon Series Proposal Fall 2026 – 2027*: dates, passages, the three parts, and speakers where known. Each week, people read **that Sunday's passage** every day Monday–Saturday and check off each day. The ESV button opens exactly those verses. Leave the `days` entries' `passage` blank to use the week's passage, which is the normal case. Fill one in only if a day should read something different.
 
 ```jsonc
 {
@@ -57,7 +56,7 @@ Everything lives in **`series/romans/series.json`**. All 31 sermons are filled i
 - Sermon dates are `startDate` plus one week for each week after it. To skip a Sunday (a holiday, for example), give that week a `"date"`. Every later week follows from there.
   Romans does this at the start of each part: week 11 is dated Apr 4, 2027 and week 21 is dated Aug 15, 2027. During the breaks, the Romans Today screen shows "Romans is on a break — we pick back up Sunday, April 4".
 - Reading days fall **Monday–Saturday before each sermon**, so people read the passage *ahead* of hearing it preached. To change that, edit `readingPlan.dayOffsets`, which counts days relative to Sunday. For example, `[1,2,3,4,5]` puts the readings in the week *after* the sermon. Any single day can also set its own `"date"`.
-- Leave any field empty and the app shows "Coming soon". You can fill the plan in gradually.
+- Leave any field empty and the app simply leaves it out. You can fill the plan in gradually.
 
 **Videos:** paste a YouTube or Vimeo link, or a direct `.mp4` link.
 **Podcast:** paste the Spotify episode share link. It's embedded on the week page, the Today page (the week after), and the Listen archive.

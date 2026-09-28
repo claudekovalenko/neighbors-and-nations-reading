@@ -50,6 +50,8 @@ export function buildSchedule(series) {
     const rawDays = week.days ?? [];
     const days = rawDays.map((day, j) => ({
       ...day,
+      // Each day reads that week's passage unless a day sets its own.
+      passage: day.passage || week.passage || '',
       index: j + 1,
       weekNumber: number,
       id: `w${number}d${j + 1}`,

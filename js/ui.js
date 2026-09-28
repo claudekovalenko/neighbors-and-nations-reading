@@ -51,9 +51,4 @@ export function spotifyBlock(url, { compact = true } = {}) {
   return `<div class="embed embed-audio"><iframe src="${esc(s.src)}" height="${height}" title="Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe></div>`;
 }
 
-export function progressBar(done, total, label = '') {
-  const pct = total ? Math.round((done / total) * 100) : 0;
-  return `<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}" aria-label="${esc(label || 'Progress')}"><span style="width:${pct}%"></span></div>`;
-}
-
 export const comingSoon = (what = 'Coming soon') => `<span class="muted">${esc(what)}</span>`;
