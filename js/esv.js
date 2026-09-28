@@ -6,8 +6,9 @@ const API = 'https://api.esv.org/v3/passage/html/';
 const PARAMS = {
   'include-passage-references': 'false',
   'include-footnotes': 'false',
-  'include-headings': 'true',
-  'include-subheadings': 'true',
+  // Verses only — no section headings or other editorial additions.
+  'include-headings': 'false',
+  'include-subheadings': 'false',
   'include-audio-link': 'false',
   'include-short-copyright': 'false',
   'include-copyright': 'false',
@@ -21,10 +22,11 @@ export function esvConfigured() {
   return Boolean(config.esv.proxyUrl || config.esv.apiKey);
 }
 
-// BibleGateway shows exactly the verses asked for (ESV.org scrolls through
-// the whole book around them).
+// BibleGateway's print view: exactly the verses asked for, without the
+// site's sidebar, commentary panels, and ads (ESV.org scrolls through the
+// whole book around them).
 export function esvLink(ref) {
-  return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV`;
+  return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV&interface=print`;
 }
 
 export async function getPassageHtml(ref) {
