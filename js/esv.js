@@ -1,5 +1,6 @@
 import { config } from '../config.js';
 import { esvCache } from './store.js';
+import { parseReference } from './reference.js';
 
 const API = 'https://api.esv.org/v3/passage/html/';
 
@@ -22,11 +23,22 @@ export function esvConfigured() {
   return Boolean(config.esv.proxyUrl || config.esv.apiKey);
 }
 
-// BibleGateway's print view: exactly the verses asked for, without the
-// site's sidebar, commentary panels, and ads (ESV.org scrolls through the
-// whole book around them).
+// BibleGateway opens on exactly the verses asked for (ESV.org scrolls
+// through the whole book around them).
 export function esvLink(ref) {
-  return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV&interface=print`;
+  return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV`;
+}
+
+// The Bible App (YouVersion; ESV is version 59). Opens the app if it's
+// installed, otherwise bible.com. Handles one continuous range within a
+// chapter, or whole chapters; anything else returns null.
+export function bibleAppLink(ref) {
+  const segs = parseReference(ref);
+  if (!segs || segs.length !== 1) return null;
+  const { book, chapter, from, to } = segs[0];
+  const verses = from === 1 && to === null ? '' : `.${from}${to && to !== from ? `-${to}` : ''}`;
+  if (to === null && from !== 1) return null;
+  return `https://www.bible.com/bible/59/${book.code}.${chapter}${verses}.ESV`;
 }
 
 export async function getPassageHtml(ref) {

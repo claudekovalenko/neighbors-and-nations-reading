@@ -242,7 +242,9 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 .scripture .btn { font-size: 1rem; }
 
 .also-read { margin: -4px 0 18px; }
-.esv-out .btn { margin-top: 4px; }
+.read-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; }
+.alt-read { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; font-size: .92rem; text-decoration: none; }
+.alt-read .icon { width: .9em; height: .9em; }
 
 .notes { margin-top: 24px; }
 .notes textarea {

@@ -37,3 +37,14 @@ test('every passage in every series is a reference ESV.org understands', () => {
     for (const ref of refs) assert.ok(parseReference(ref), `${entry.id}: can't parse "${ref}"`);
   }
 });
+
+test('reading links open exactly the passage', async () => {
+  globalThis.localStorage ??= { getItem: () => null, setItem() {} };
+  const { esvLink, bibleAppLink } = await import('../js/esv.js');
+  assert.equal(esvLink('Romans 2:1-29'), 'https://www.biblegateway.com/passage/?search=Romans%202%3A1-29&version=ESV');
+  assert.equal(bibleAppLink('Romans 2:1-29'), 'https://www.bible.com/bible/59/ROM.2.1-29.ESV');
+  assert.equal(bibleAppLink('Romans 1:16'), 'https://www.bible.com/bible/59/ROM.1.16.ESV');
+  assert.equal(bibleAppLink('Psalm 98'), 'https://www.bible.com/bible/59/PSA.98.ESV');
+  assert.equal(bibleAppLink('Luke 1:5-25; 2:1-7'), null); // two ranges: BibleGateway only
+  assert.equal(bibleAppLink('Romans 1:18-2:3'), null);
+});
