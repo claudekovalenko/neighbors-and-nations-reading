@@ -158,7 +158,8 @@ test.describe('things people tap', () => {
     await open(page, '#/');
     await page.locator('details.notes summary').click();
     await page.locator('.note-text').fill('Grace for Jew and Gentile');
-    await page.locator('a.text-link', { hasText: 'Week 4 details' }).click();
+    await page.locator('.tabbar a[data-tab="weeks"]').click();
+    await page.locator('.week-row', { hasText: 'Romans 2:1-29' }).click();
     await expect(page.locator('.note-text')).toHaveValue('Grace for Jew and Gentile');
     await page.reload();
     await expect(page.locator('.note-text')).toHaveValue('Grace for Jew and Gentile');
