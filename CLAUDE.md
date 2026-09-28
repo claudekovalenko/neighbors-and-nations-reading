@@ -60,3 +60,7 @@ agents learn over time. Keep each entry short and concrete.
 - It must look right on both iPhone and Android. Verify on devices, measure,
   and look at viewport screenshots before saying something is fixed.
 - The owner is not technical: report in plain language, briefly.
+- The bottom tab bar must sit in exactly the same place on every screen. The
+  layout is app-style (body = 100dvh column; only `main` scrolls). Never go back
+  to `position: fixed` for the bars: mobile Safari moves fixed elements, and a
+  desktop-browser check won't show it. Check layout in phone emulation.
