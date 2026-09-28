@@ -7,7 +7,7 @@ export const config = {
   seriesIndex: './series/index.json',
 
   // Scripture is the ESV. Until one of these is set, each passage links to
-  // ESV.org (text + audio). Get a key at https://api.esv.org, then use ONE:
+  // BibleGateway (ESV). Get a key at https://api.esv.org, then use ONE:
   //   proxyUrl — recommended. A tiny server function that holds your key
   //              (see server/esv-proxy.worker.js). Key stays private.
   //   apiKey   — quickest to set up, but the key is visible to anyone

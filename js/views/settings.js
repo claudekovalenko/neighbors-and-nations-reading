@@ -33,12 +33,12 @@ export function settingsView(ctx) {
   const seriesPicker = index.series.length > 1 ? `
     <section class="card">
       <h2 class="section-title">Series</h2>
-      <label class="field">Show
-        <select id="series">
-          <option value="" ${!s.seriesId ? 'selected' : ''}>Automatic — what’s being preached now</option>
+      <div class="field">
+        <select id="series" aria-label="Series to show">
+          <option value="" ${!s.seriesId ? 'selected' : ''}>Automatic — current series</option>
           ${index.series.map((e) => `<option value="${esc(e.id)}" ${e.id === s.seriesId ? 'selected' : ''}>${esc(e.title ?? e.id)}</option>`).join('')}
         </select>
-      </label>
+      </div>
     </section>` : '';
 
   return {

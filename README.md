@@ -4,7 +4,6 @@ An installable web app (PWA) for following a sermon series day by day. It was bu
 
 - **Today:** this week's passage with a **Read** button (ESV, only those verses), Mon–Sat check-offs for reading it each day before Sunday, and last week's message.
 - **Weeks:** every sermon in the series. Each one has its date, passage, big idea, the pastor's video from before or after Sunday, the podcast episode, discussion questions, and the day-by-day reading plan.
-- **Listen:** the latest recorded message plus an archive of earlier ones (Spotify embeds).
 - **Settings:** a daily reminder, a calendar export of the whole plan, text size, install help, and a series switcher.
 
 The app works offline once installed. Progress and notes stay on each person's device, so nobody needs an account.
@@ -58,7 +57,7 @@ Everything lives in **`series/romans/series.json`**. All 31 sermons are filled i
 - Leave any field empty and the app simply leaves it out. You can fill the plan in gradually.
 
 **Videos:** paste a YouTube or Vimeo link, or a direct `.mp4` link.
-**Podcast:** paste the Spotify episode share link. It's embedded on the week page, the Today page (the week after), and the Listen archive.
+**Podcast:** paste the Spotify episode share link. It's embedded on the week page and, the week after, on the Today page.
 
 Check your edits with `npm run validate`.
 
@@ -66,7 +65,7 @@ Check your edits with `npm run validate`.
 
 The app uses the **ESV only**.
 
-- **Right now, with no API key:** every passage has a **Read in the ESV** button that opens it on ESV.org. ESV.org also has a play button for audio.
+- **Right now, with no API key:** every passage has a **Read** button that opens exactly those verses on BibleGateway (ESV), plus an **Open in the Bible App** link (YouVersion, ESV). Tapping either one marks today as read.
 - **Each sermon** also has a *Read* page for its passage, linked from the Today screen and the week page.
 - **Showing the text inside the app** needs an [ESV API](https://api.esv.org) key from Crossway, which is free for non-commercial church use but is reviewed by hand. Once you have one, choose one option in `config.js`:
   - **`proxyUrl` (recommended):** deploy `server/esv-proxy.worker.js` as a free Cloudflare Worker (steps are in the file). The key stays secret.

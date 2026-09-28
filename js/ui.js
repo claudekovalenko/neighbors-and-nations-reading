@@ -50,5 +50,3 @@ export function spotifyBlock(url, { compact = true } = {}) {
   const height = s.kind === 'show' ? 232 : compact ? 152 : 232;
   return `<div class="embed embed-audio"><iframe src="${esc(s.src)}" height="${height}" title="Spotify player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe></div>`;
 }
-
-export const comingSoon = (what = 'Coming soon') => `<span class="muted">${esc(what)}</span>`;

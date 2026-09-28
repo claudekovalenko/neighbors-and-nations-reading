@@ -2,6 +2,7 @@ import { locate, daysUntil, sameDay } from '../schedule.js';
 import { esc, fmtLong, icon, videoBlock, spotifyBlock } from '../ui.js';
 import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
 import { trackerHtml, mountTracker } from '../tracker.js';
+import { notesHtml, mountNotes } from '../notes.js';
 import { weekHeading } from './weeks.js';
 
 export function homeView(ctx) {
@@ -39,6 +40,7 @@ export function homeView(ctx) {
         ${cw.title && cw.passage ? `<p class="lead">${esc(cw.title)}</p>` : ''}
         ${cw.passage ? scriptureBlock(cw.passage) : ''}
         ${trackerHtml(series, cw, loc.today)}
+        ${notesHtml(series, cw)}
         ${videoBlock(cw.videos?.before, 'A word from our pastor')}
         <a class="text-link" href="#/week/${cw.number}">Week ${cw.number} details ${icon('chevron')}</a>
       </section>`);
@@ -71,6 +73,7 @@ export function homeView(ctx) {
     mount(root) {
       mountScripture(root);
       mountTracker(root, ctx);
+      if (cw) mountNotes(root, series, cw);
     },
   };
 }

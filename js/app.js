@@ -56,7 +56,10 @@ function chooseSeries() {
 function useSeries(id) {
   ctx.series = ctx.all[id];
   ctx.schedule = buildSchedule(ctx.series);
-  document.documentElement.style.setProperty('--accent', ctx.series.theme?.accent ?? '#b5832a');
+  const accent = ctx.series.theme?.accent;
+  const root = document.documentElement.style;
+  if (accent) root.setProperty('--series-accent', accent);
+  else root.removeProperty('--series-accent');
   document.querySelector('.app-series').textContent = ctx.series.title;
 }
 
@@ -84,7 +87,10 @@ function render({ keepScroll = false } = {}) {
     }
   }
   if (!view) {
-    view = { title: 'Not found', html: '<h1>Page not found</h1><p><a href="#/">Go to today</a></p>' };
+    view = {
+      title: 'Not found',
+      html: '<header class="page-head"><h1>Page not found</h1></header><a class="btn btn-secondary" href="#/">Go to Today</a>',
+    };
   }
 
   main.innerHTML = view.html;

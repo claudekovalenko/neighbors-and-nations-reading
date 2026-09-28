@@ -1,8 +1,8 @@
 import { locate, resumesAfterBreak } from '../schedule.js';
-import { notes } from '../store.js';
 import { esc, fmtLong, fmtShort, icon, videoBlock, spotifyBlock } from '../ui.js';
 import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
 import { trackerHtml, mountTracker } from '../tracker.js';
+import { notesHtml, mountNotes } from '../notes.js';
 
 export function weekHeading(week) {
   return week.title || week.passage || `Week ${week.number}`;
@@ -62,7 +62,6 @@ export function weekDetailView(ctx, [n]) {
   const loc = locate(schedule);
   const prev = schedule[week.number - 2];
   const next = schedule[week.number];
-  const noteId = `w${week.number}`;
 
   return {
     title: `Week ${week.number}`,
@@ -72,10 +71,9 @@ export function weekDetailView(ctx, [n]) {
         <p class="eyebrow">Week ${week.number} · ${esc(fmtLong(week.sermonDate))}</p>
         <h1 class="passage">${esc(week.passage || weekHeading(week))}</h1>
         ${week.title && week.passage ? `<p class="lead">${esc(week.title)}</p>` : ''}
-        ${week.preacher ? `<p class="muted">${esc(week.preacher)}</p>` : ''}
       </header>
 
-      ${week.passage ? scriptureBlock(week.passage) : '<p class="muted">Passage coming soon.</p>'}
+      ${week.passage ? scriptureBlock(week.passage) : week.title ? '' : '<p class="muted">Passage coming soon.</p>'}
       ${trackerHtml(series, week, loc.today)}
 
       ${week.bigIdea ? `<blockquote class="big-idea">${esc(week.bigIdea)}</blockquote>` : ''}
@@ -91,10 +89,7 @@ export function weekDetailView(ctx, [n]) {
           <ol class="questions">${week.questions.map((q) => `<li>${esc(q)}</li>`).join('')}</ol>
         </section>` : ''}
 
-      <section class="notes">
-        <label class="eyebrow" for="note">My notes <span class="muted">(saved on this device)</span></label>
-        <textarea id="note" rows="4" placeholder="What stood out? What do you want to remember?">${esc(notes.get(series.id, noteId))}</textarea>
-      </section>
+      ${notesHtml(series, week)}
 
       <nav class="pager" aria-label="Weeks">
         ${prev ? `<a href="#/week/${prev.number}">${icon('back')} Week ${prev.number}</a>` : '<span></span>'}
@@ -105,11 +100,7 @@ export function weekDetailView(ctx, [n]) {
     mount(root) {
       mountScripture(root);
       mountTracker(root, ctx);
-      let t;
-      root.querySelector('#note').addEventListener('input', (e) => {
-        clearTimeout(t);
-        t = setTimeout(() => notes.set(series.id, noteId, e.target.value.trim() ? e.target.value : ''), 400);
-      });
+      mountNotes(root, series, week);
     },
   };
 }
