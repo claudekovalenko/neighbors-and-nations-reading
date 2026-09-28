@@ -59,7 +59,7 @@ export function homeView(ctx) {
     parts.push(`
       <section class="card">
         <p class="eyebrow">Series complete</p>
-        <p>Every week stays here — <a href="#/weeks">look back</a> or <a href="#/listen">listen again</a>.</p>
+        <p>Every week stays here — <a href="#/weeks">look back through the series</a>.</p>
       </section>`);
   }
 

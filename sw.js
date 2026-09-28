@@ -1,5 +1,5 @@
 // Bump VERSION whenever app files change so installed apps pick up the update.
-const VERSION = 'v7';
+const VERSION = 'v8';
 const CACHE = `sermon-series-${VERSION}`;
 
 const SHELL = [
@@ -23,7 +23,6 @@ const SHELL = [
   'js/views/weeks.js',
   'js/scripture.js',
   'js/tracker.js',
-  'js/views/listen.js',
   'js/views/settings.js',
   'icons/icon.svg',
   'icons/icon-192.png',

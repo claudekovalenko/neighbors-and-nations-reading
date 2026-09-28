@@ -5,7 +5,6 @@ import { checkReminder } from './reminders.js';
 import { esc } from './ui.js';
 import { homeView } from './views/home.js';
 import { weeksListView, weekDetailView } from './views/weeks.js';
-import { listenView } from './views/listen.js';
 import { settingsView } from './views/settings.js';
 
 const routes = [
@@ -14,7 +13,6 @@ const routes = [
   [/^\/week\/(\d+)$/, weekDetailView, 'weeks'],
   // Older links to a day or passage page open the week.
   [/^\/week\/(\d+)\/(?:day\/\d+|passage)$/, weekDetailView, 'weeks'],
-  [/^\/listen$/, listenView, 'listen'],
   [/^\/settings$/, settingsView, 'settings'],
 ];
 

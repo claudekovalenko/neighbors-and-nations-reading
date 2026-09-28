@@ -18,7 +18,6 @@
   ],
   "shortcuts": [
     { "name": "Today's reading", "url": "./#/" },
-    { "name": "All weeks", "url": "./#/weeks" },
-    { "name": "Listen", "url": "./#/listen" }
+    { "name": "All weeks", "url": "./#/weeks" }
   ]
 }
