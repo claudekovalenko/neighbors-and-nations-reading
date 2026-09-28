@@ -190,7 +190,7 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 .row-chevron { color: var(--muted); }
 
 .tracker { margin: 10px 0 4px; }
-.dots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; }
+.dots { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; }
 .dot {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
   background: none; border: 0; padding: 0; font: inherit; color: var(--muted); cursor: pointer;
@@ -238,6 +238,8 @@ main { max-width: 680px; margin: 0 auto; padding: 20px 16px 32px; outline: none;
 
 .notes { margin: 24px 0 0; border-block: 1px solid var(--line); }
 .card .notes { margin-top: 16px; }
+/* Last thing in a card: the card's own edge is the bottom line. */
+.card .notes:last-child { border-bottom: 0; margin-bottom: -6px; }
 .notes summary {
   display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px;
   border-radius: 8px; font-weight: 600; cursor: pointer; list-style: none;
@@ -280,4 +282,11 @@ main:focus, main:focus-visible { outline: none; }
 
 @media (min-width: 720px) {
   main { padding-top: 32px; }
+}
+
+/* Narrow phones (e.g. 320px iPhone SE): trim side padding so each day's
+   tap area on the Mon–Sat row stays at least 44px wide. */
+@media (max-width: 359px) {
+  main { padding-left: 12px; padding-right: 12px; }
+  .card { padding: 16px 14px; }
 }
