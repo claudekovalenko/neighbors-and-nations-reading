@@ -15,7 +15,7 @@ There's no build step: it's plain HTML, CSS, and JavaScript modules, so any stat
 
 ## Filling in the Romans plan
 
-Everything lives in **`series/romans/series.json`**. All 31 sermons are filled in from the church's *Sermon Series Proposal Fall 2026 – 2027*: dates, passages, the three parts, and speakers where known. Each week, people read **that Sunday's passage** every day Monday–Saturday and check off each day. The ESV button opens exactly those verses. Leave the `days` entries' `passage` blank to use the week's passage, which is the normal case. Fill one in only if a day should read something different.
+Everything lives in **`series/romans/series.json`**. All 31 sermons are filled in from the church's *Sermon Series Proposal Fall 2026 – 2027*: dates, passages, and the three parts. Each week, people read **that Sunday's passage** every day Monday–Saturday and check off each day. The ESV button opens exactly those verses. Leave the `days` entries' `passage` blank to use the week's passage, which is the normal case. Fill one in only if a day should read something different.
 
 ```jsonc
 {
@@ -32,7 +32,6 @@ Everything lives in **`series/romans/series.json`**. All 31 sermons are filled i
     {
       "title": "Introduction",
       "passage": "Romans 1:1-7",
-      "preacher": "Josh",
       "part": "Part 1",               // optional — groups weeks on the Weeks screen
       "date": "2026-09-13",          // optional — override this week's Sunday
       "summary": "One short paragraph.",
@@ -108,7 +107,7 @@ The app also holds the rest of the 2026–27 preaching calendar, each in its own
 
 | Series | Sundays | Status |
 |---|---|---|
-| Romans | Sep 13 – Nov 15, Apr 4 – Jun 6, Aug 15 – Oct 24 | passages + some speakers |
+| Romans | Sep 13 – Nov 15, Apr 4 – Jun 6, Aug 15 – Oct 24 | passages |
 | Advent (`advent-2026`) | Nov 29 – Dec 27, 2026 | Luke 1–2 passages |
 | The Sermon on the Mount | Jan 3 – Mar 7, 2027 | Matthew 5–7 passages |
 | Easter (`easter-2027`) | Mar 14 – Mar 28, 2027 | titles only, passages TBD |

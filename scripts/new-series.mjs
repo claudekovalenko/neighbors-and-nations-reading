@@ -40,7 +40,6 @@ const series = {
   weeks: Array.from({ length: weeks }, () => ({
     title: '',
     passage: '',
-    preacher: '',
     summary: '',
     bigIdea: '',
     videos: { before: '', after: '' },
