@@ -1,5 +1,5 @@
 import { locate, daysUntil, sameDay } from '../schedule.js';
-import { esc, fmtLong, videoBlock, spotifyBlock } from '../ui.js';
+import { esc, ref, fmtLong, videoBlock, spotifyBlock } from '../ui.js';
 import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
 import { trackerHtml, mountTracker } from '../tracker.js';
 import { notesHtml, mountNotes } from '../notes.js';
@@ -20,7 +20,9 @@ export function homeView(ctx) {
   parts.push(`
     <header class="hero">
       <h1>${esc(series.title)}</h1>
-      <p class="muted">${esc(fmtLong(loc.today))}</p>
+      ${series.subtitle ? `<p class="hero-sub">${esc(series.subtitle)}</p>` : ''}
+      <span class="rule" aria-hidden="true"></span>
+      <p class="hero-date">${esc(fmtLong(loc.today))}</p>
     </header>`);
 
   const cw = loc.currentWeek;
@@ -32,18 +34,16 @@ export function homeView(ctx) {
       <section class="card">
         <p class="eyebrow">${esc(series.title)} is on a break</p>
         <h2>Back ${esc(fmtLong(cw.sermonDate))}</h2>
-        ${cw.passage ? `<p>Starting with ${esc(cw.passage)}.</p>` : ''}
+        ${cw.passage ? `<p>Starting with ${esc(ref(cw.passage))}.</p>` : ''}
       </section>`);
   } else if (cw) {
-    const when = sameDay(cw.sermonDate, loc.today)
+    const label = sameDay(cw.sermonDate, loc.today)
       ? 'Today'
-      : loc.status === 'upcoming' && cw.number === 1
-        ? `Starts ${fmtLong(cw.sermonDate)}`
-        : fmtLong(cw.sermonDate);
+      : loc.status === 'upcoming' && cw.number === 1 ? 'Starts' : 'This week';
     parts.push(`
       <section class="card card-feature">
-        <p class="eyebrow">This week · ${esc(when)}</p>
-        <h2 class="passage">${esc(cw.passage || weekHeading(cw))}</h2>
+        <p class="card-meta"><span class="eyebrow">${label}</span><span class="meta-date">${esc(fmtLong(cw.sermonDate))}</span></p>
+        <h2 class="passage">${esc(ref(cw.passage) || weekHeading(cw))}</h2>
         ${cw.title && cw.passage ? `<p class="lead">${esc(cw.title)}</p>` : ''}
         ${cw.passage ? scriptureBlock(cw.passage) : ''}
         ${trackerHtml(series, cw, loc.today)}

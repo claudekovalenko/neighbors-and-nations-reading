@@ -1,5 +1,8 @@
 import { videoEmbed, spotifyEmbed } from './media.js';
 
+// Passage references typeset with an en dash in ranges: "Romans 2:1–29".
+export const ref = (text) => String(text ?? '').replace(/(\d)\s*-\s*(\d)/g, '$1\u2013$2');
+
 export function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 }

@@ -85,3 +85,6 @@ agents learn over time. Keep each entry short and concrete.
   both bundled in fonts/. Soft white cards, no heavy borders, near-black primary
   button, muted gold used sparingly, small uppercase letter-spaced labels.
 - App name is "N&N Sermons" (home-screen label, manifest, page titles). Current series: Romans.
+- Typography should feel editorial ("umami"): italic Newsreader for dates and
+  subtitles, few all-caps labels (tracking ~.1em), en dashes in verse ranges
+  (use `ref()` from js/ui.js for display; keep raw references for links).

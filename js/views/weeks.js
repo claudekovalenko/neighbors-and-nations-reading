@@ -1,11 +1,11 @@
 import { locate, resumesAfterBreak } from '../schedule.js';
-import { esc, fmtLong, fmtShort, icon, videoBlock, spotifyBlock } from '../ui.js';
+import { esc, ref, fmtLong, fmtShort, icon, videoBlock, spotifyBlock } from '../ui.js';
 import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
 import { trackerHtml, mountTracker } from '../tracker.js';
 import { notesHtml, mountNotes } from '../notes.js';
 
 export function weekHeading(week) {
-  return week.title || week.passage || `Week ${week.number}`;
+  return week.title || ref(week.passage) || `Week ${week.number}`;
 }
 
 export function weeksListView(ctx) {
@@ -29,7 +29,7 @@ export function weeksListView(ctx) {
   const items = schedule.map((w) => {
     const current = loc.currentWeek?.number === w.number;
     const past = w.sermonDate < loc.today;
-    const sub = w.title && w.passage ? w.passage : w.title || w.passage ? '' : 'Passage coming soon';
+    const sub = w.title && w.passage ? ref(w.passage) : w.title || w.passage ? '' : 'Passage coming soon';
     return `${heading(w)}
       <li>
         <a class="week-row ${current ? 'is-current' : ''} ${past ? 'is-past' : ''}" href="#/week/${w.number}" ${current ? 'aria-current="true"' : ''}>
@@ -68,8 +68,8 @@ export function weekDetailView(ctx, [n]) {
     html: `
       <a class="back-link" href="#/weeks">${icon('back')} All weeks</a>
       <header class="page-head">
-        <p class="eyebrow">Week ${week.number} · ${esc(fmtLong(week.sermonDate))}</p>
-        <h1 class="passage">${esc(week.passage || weekHeading(week))}</h1>
+        <p class="card-meta"><span class="eyebrow">Week ${week.number}</span><span class="meta-date">${esc(fmtLong(week.sermonDate))}</span></p>
+        <h1 class="passage">${esc(ref(week.passage) || weekHeading(week))}</h1>
         ${week.title && week.passage ? `<p class="lead">${esc(week.title)}</p>` : ''}
       </header>
 
