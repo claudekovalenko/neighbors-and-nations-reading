@@ -75,7 +75,7 @@ export function buildICS({ series, schedule, time, appUrl, from = new Date(), se
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Sermon Series//EN',
+    'PRODID:-//N&N Sermons//EN',
     'CALSCALE:GREGORIAN',
     `X-WR-CALNAME:${icsEscape(series.title + ' Reading Plan')}`,
   ];

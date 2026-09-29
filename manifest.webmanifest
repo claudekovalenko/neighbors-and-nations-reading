@@ -1,7 +1,7 @@
 {
-  "name": "Sermon Series · Neighbors and Nations Church",
-  "short_name": "Sermon Series",
-  "description": "Daily ESV readings, sermon notes, and messages for the current sermon series at Neighbors and Nations Church.",
+  "name": "N&N Sermons",
+  "short_name": "N&N Sermons",
+  "description": "Sermons from Neighbors and Nations Church. Read each week’s passage before Sunday, keep notes, and follow the series. Now: Romans.",
   "id": "./",
   "start_url": "./#/",
   "scope": "./",

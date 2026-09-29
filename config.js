@@ -1,10 +1,10 @@
 // App-wide settings. Series content lives in /series — see README.md.
 export const config = {
-  appName: 'Sermon Series',
+  appName: 'N&N Sermons',
   church: 'Neighbors and Nations Church',
 
   // Shown in Settings. Keep in step with VERSION in sw.js (a test checks).
-  version: '20',
+  version: '21',
 
   // Lists every series and which one opens by default.
   seriesIndex: './series/index.json',

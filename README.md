@@ -1,6 +1,6 @@
-# Sermon Series
+# N&N Sermons
 
-An installable web app (PWA) for following a sermon series day by day. It was built for the **30-week Romans series at Neighbors and Nations Church** and can be reused for any future series.
+The sermon app for **Neighbors and Nations Church**: an installable web app (PWA) for following each sermon series week by week. The current series is **Romans**, and the app can be reused for future series.
 
 - **Today:** this week's passage with a **Read** button (ESV, only those verses), Mon–Sat check-offs for reading it each day before Sunday, and last week's message.
 - **Weeks:** every sermon in the series. Each one has its date, passage, big idea, the pastor's video from before or after Sunday, the podcast episode, discussion questions, and the day-by-day reading plan.
