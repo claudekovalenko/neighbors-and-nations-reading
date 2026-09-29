@@ -60,7 +60,10 @@ agents learn over time. Keep each entry short and concrete.
 - It must look right on both iPhone and Android. Verify on devices, measure,
   and look at viewport screenshots before saying something is fixed.
 - The owner is not technical: report in plain language, briefly.
-- The bottom tab bar must sit in exactly the same place on every screen. The
-  layout is app-style (body = 100dvh column; only `main` scrolls). Never go back
-  to `position: fixed` for the bars: mobile Safari moves fixed elements, and a
-  desktop-browser check won't show it. Check layout in phone emulation.
+- The bottom tab bar must sit in exactly the same place on every screen and
+  reach the bottom edge of the phone. The layout is app-style: the body is
+  pinned to the screen edges (`position: fixed; inset: 0`), it's a flex column,
+  and only `main` scrolls. Never put `position: fixed` on the bars themselves
+  (mobile Safari moves them), and never size the app with 100vh/100dvh (iPhone
+  home-screen apps come up short by the status-bar height, leaving a gap under
+  the bar). Check in phone emulation, and ask for a phone screenshot when in doubt.
