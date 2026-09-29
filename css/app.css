@@ -49,8 +49,10 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-/* Anything showing outside the app (e.g. below it on some phones) matches the
-   tab bar, so it reads as part of the bar rather than a gap. */
+/* The page background is the tab bar's color, and only the scrolling area
+   uses the page color. If a phone ever leaves a strip below the app (iOS 26
+   home-screen apps installed with the old translucent status bar did), it
+   reads as part of the tab bar rather than a gap. */
 html { -webkit-text-size-adjust: 100%; height: 100%; background: var(--surface); }
 
 /* App-style layout: app bar on top, tab bar on the bottom, and only the
@@ -62,7 +64,7 @@ body {
   position: fixed;
   inset: 0;
   margin: 0;
-  background: var(--bg);
+  background: var(--surface);
   color: var(--ink);
   font: 16px/1.55 var(--sans);
   display: flex;
@@ -114,6 +116,7 @@ p { margin: 0 0 .8em; }
 
 main {
   flex: 1 1 auto;
+  background: var(--bg);
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior-y: contain;

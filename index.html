@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sermon Series · Neighbors and Nations Church</title>
   <meta name="description" content="Daily ESV readings, sermon notes, and messages for the Neighbors and Nations Church sermon series.">
-  <meta name="theme-color" content="#1f2a44">
+  <meta name="theme-color" content="#f7f3ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#11151d" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Not "black-translucent": on iOS 26 that makes home-screen apps stop short
+       of the bottom of the screen (WebKit bug 301108), leaving a strip under the
+       tab bar that no CSS can reach. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Sermon Series">
   <link rel="stylesheet" href="css/app.css">
 </head>

@@ -70,3 +70,7 @@ agents learn over time. Keep each entry short and concrete.
   (mobile Safari moves them), and never size the app with 100vh/100dvh (iPhone
   home-screen apps come up short by the status-bar height, leaving a gap under
   the bar). Check in phone emulation, and ask for a phone screenshot when in doubt.
+- Never use `apple-mobile-web-app-status-bar-style: black-translucent`. On iOS 26
+  it makes home-screen apps stop short of the bottom edge (WebKit bug 301108);
+  no CSS can fix that strip. Use "default". When a layout bug only shows on the
+  owner's phone, research the platform (WebKit bugs, iOS version) before guessing.
