@@ -4,7 +4,7 @@ export const config = {
   church: 'Neighbors and Nations Church',
 
   // Shown in Settings. Keep in step with VERSION in sw.js (a test checks).
-  version: '17',
+  version: '18',
 
   // Lists every series and which one opens by default.
   seriesIndex: './series/index.json',
