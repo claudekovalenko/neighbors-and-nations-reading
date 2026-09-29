@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test';
 const DATES = {
   midweek: '2026-09-29T09:00:00', // Tuesday, Romans week 4
   sunday: '2026-10-04T09:00:00',
-  advent: '2026-12-08T09:00:00',
+  romansBreak: '2026-12-08T09:00:00', // between Romans parts 1 and 2
   before: '2026-09-01T09:00:00',
   after: '2028-01-01T09:00:00',
 };
@@ -127,13 +127,8 @@ test.describe('shows the right thing for the date', () => {
     await expect(page.locator('.card-feature .eyebrow')).toContainText('Today');
   });
 
-  test('December: Advent is shown automatically', async ({ page }) => {
-    await open(page, '#/', { when: 'advent' });
-    await expect(page.locator('.hero h1')).toHaveText('Advent');
-  });
-
-  test('December with Romans chosen: Romans is on a break', async ({ page }) => {
-    await open(page, '#/', { when: 'advent', settings: { seriesId: 'romans' } });
+  test('between Romans parts: says when it resumes', async ({ page }) => {
+    await open(page, '#/', { when: 'romansBreak' });
     await expect(page.locator('main')).toContainText('on a break');
     await expect(page.locator('main')).toContainText('April 4');
   });
@@ -196,15 +191,6 @@ test.describe('things people tap', () => {
     await expect(page.locator('h1')).toHaveText('Settings');
     await expect(page.locator('.tabbar a[aria-current="page"]')).toHaveAttribute('data-tab', 'settings');
     await page.locator('.tabbar a[data-tab="today"]').click();
-    await expect(page.locator('.hero h1')).toHaveText('Romans');
-  });
-
-  test('choosing a series in Settings', async ({ page }) => {
-    await open(page, '#/settings');
-    await page.locator('select#series').selectOption('advent-2026');
-    await expect(page.locator('.hero h1')).toHaveText('Advent');
-    await page.goto('/#/settings');
-    await page.locator('select#series').selectOption('');
     await expect(page.locator('.hero h1')).toHaveText('Romans');
   });
 });

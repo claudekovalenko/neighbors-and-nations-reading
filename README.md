@@ -100,19 +100,6 @@ npm run validate   # checks every series file
 
 When you change app code (anything outside `series/`), bump `VERSION` in `sw.js` so installed copies update. Series data always loads fresh when people are online.
 
-## The other series
-
-The app also holds the rest of the 2026–27 preaching calendar, each in its own `series/<id>/series.json`:
-
-| Series | Sundays | Status |
-|---|---|---|
-| Romans | Sep 13 – Nov 15, Apr 4 – Jun 6, Aug 15 – Oct 24 | passages |
-| Advent (`advent-2026`) | Nov 29 – Dec 27, 2026 | Luke 1–2 passages |
-| The Sermon on the Mount | Jan 3 – Mar 7, 2027 | Matthew 5–7 passages |
-| Easter (`easter-2027`) | Mar 14 – Mar 28, 2027 | titles only, passages TBD |
-
-**The app opens whichever series is being preached now**, meaning the one with the soonest upcoming Sunday. Nobody has to switch anything when Romans pauses for Advent. People can still pin a series in Settings. Thanksgiving (Nov 22) and the summer series are not included yet, because the proposal marks them as undecided.
-
 ## Starting a new series later
 
 ```bash

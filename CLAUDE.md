@@ -79,3 +79,8 @@ agents learn over time. Keep each entry short and concrete.
   screenshot, measure it in points (iPhone 14 = 844pt tall) to tell a stale
   install from a real layout problem. Old installs see a "re-add the app" note.
 - Tab bar: slim, icons low, a little padding above the icons (8px).
+- Only the current series (Romans). Don't add other series (Advent, etc.)
+  unless asked.
+- Look: chic, modern, classy. Newsreader (serif) for headings, Inter for text,
+  both bundled in fonts/. Soft white cards, no heavy borders, near-black primary
+  button, muted gold used sparingly, small uppercase letter-spaced labels.

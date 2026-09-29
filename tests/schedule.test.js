@@ -76,18 +76,13 @@ test('allDays is chronological', () => {
   for (let i = 1; i < days.length; i++) assert.ok(days[i].date >= days[i - 1].date);
 });
 
-test('pickCurrentSeries follows the preaching calendar', async () => {
+test('pickCurrentSeries picks the series with the soonest sermon', async () => {
   const { pickCurrentSeries } = await import('../js/schedule.js');
-  const load = (id) => ({ id, schedule: buildSchedule(JSON.parse(readFileSync(`series/${id}/series.json`, 'utf8'))) });
-  const list = ['romans', 'advent-2026', 'sermon-on-the-mount', 'easter-2027'].map(load);
-  const on = (iso) => pickCurrentSeries(list, at(iso));
-  assert.equal(on('2026-09-25'), 'romans');
-  assert.equal(on('2026-11-15'), 'romans'); // last Sunday of Part 1
-  assert.equal(on('2026-11-16'), 'advent-2026');
-  assert.equal(on('2027-01-01'), 'sermon-on-the-mount');
-  assert.equal(on('2027-03-08'), 'easter-2027');
-  assert.equal(on('2027-03-29'), 'romans'); // Part 2 starts Apr 4
-  assert.equal(on('2028-01-01'), 'romans'); // everything over: most recent
+  const mk = (id, startDate, n) => ({ id, schedule: buildSchedule({ startDate, weeks: Array.from({ length: n }, () => ({ days: [] })) }) });
+  const list = [mk('a', '2026-10-04', 3), mk('b', '2026-11-01', 2)];
+  assert.equal(pickCurrentSeries(list, at('2026-10-01')), 'a');
+  assert.equal(pickCurrentSeries(list, at('2026-10-20')), 'b');
+  assert.equal(pickCurrentSeries(list, at('2027-01-01')), 'b'); // all over: most recent
 });
 
 test('Romans dates match the church calendar, including breaks', async () => {

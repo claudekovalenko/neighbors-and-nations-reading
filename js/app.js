@@ -60,7 +60,6 @@ function useSeries(id) {
   const root = document.documentElement.style;
   if (accent) root.setProperty('--series-accent', accent);
   else root.removeProperty('--series-accent');
-  document.querySelector('.app-series').textContent = ctx.series.title;
 }
 
 function switchSeries(id) {
