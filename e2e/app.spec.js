@@ -118,7 +118,7 @@ test('bottom bar stays put when scrolling a long page, and hides nothing', async
 test.describe('shows the right thing for the date', () => {
   test('mid-week: this week’s Romans passage', async ({ page }) => {
     await open(page, '#/');
-    await expect(page.locator('.card-feature h2')).toHaveText('Romans 2:1-29');
+    await expect(page.locator('.card-feature h2')).toHaveText('Romans 2:1–29');
     await expect(page.locator('.read-link').first()).toHaveAttribute('href', /biblegateway\.com.*Romans.*2.*1-29.*version=ESV/);
   });
 
@@ -175,7 +175,7 @@ test.describe('things people tap', () => {
     await page.locator('details.notes summary').click();
     await page.locator('.note-text').fill('Grace for Jew and Gentile');
     await page.locator('.tabbar a[data-tab="weeks"]').click();
-    await page.locator('.week-row', { hasText: 'Romans 2:1-29' }).click();
+    await page.locator('.week-row', { hasText: 'Romans 2:1–29' }).click();
     await expect(page.locator('.note-text')).toHaveValue('Grace for Jew and Gentile');
     await page.reload();
     await expect(page.locator('.note-text')).toHaveValue('Grace for Jew and Gentile');
@@ -184,7 +184,7 @@ test.describe('things people tap', () => {
   test('moving between weeks and tabs', async ({ page }) => {
     await open(page, '#/week/4');
     await page.getByRole('link', { name: /Week 5/ }).click();
-    await expect(page.locator('h1')).toHaveText('Romans 3:1-8');
+    await expect(page.locator('h1')).toHaveText('Romans 3:1–8');
     await page.getByRole('link', { name: /All weeks/ }).click();
     await expect(page.locator('h1')).toHaveText('All weeks');
     await page.locator('.tabbar a[data-tab="settings"]').click();
