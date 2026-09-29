@@ -103,7 +103,7 @@ p { margin: 0 0 .8em; }
   /* Slim, with the icons low: on iPhones with a home line the labels sit just
      above it (the owner wants them lower than Apple's default spacing); 6px
      below on phones without one. */
-  padding-top: 2px;
+  padding-top: 8px;
   padding-bottom: max(6px, calc(env(safe-area-inset-bottom) - 20px));
   padding-inline: max(0px, calc((100% - 680px) / 2));
   background: var(--surface);
@@ -262,6 +262,8 @@ main {
 .notes { margin: 24px 0 0; border-block: 1px solid var(--line); }
 .card .notes { margin-top: 16px; }
 /* Last thing in a card: the card's own edge is the bottom line. */
+.reinstall-note { border-left: 4px solid var(--accent); }
+.reinstall-note p { margin: 0; }
 .card .notes:last-child { border-bottom: 0; margin-bottom: -6px; }
 .notes summary {
   display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px;

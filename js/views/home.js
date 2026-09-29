@@ -10,6 +10,13 @@ export function homeView(ctx) {
   const loc = locate(schedule);
   const parts = [];
 
+  if (ctx.staleInstall) {
+    parts.push(`
+      <section class="card reinstall-note">
+        <p><strong>One quick fix:</strong> delete this app from your home screen, then open the link in Safari and tap <strong>Share → Add to Home Screen</strong>. This fixes the space under the bottom bar.</p>
+      </section>`);
+  }
+
   parts.push(`
     <header class="hero">
       <h1>${esc(series.title)}</h1>

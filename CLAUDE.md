@@ -74,3 +74,8 @@ agents learn over time. Keep each entry short and concrete.
   it makes home-screen apps stop short of the bottom edge (WebKit bug 301108);
   no CSS can fix that strip. Use "default". When a layout bug only shows on the
   owner's phone, research the platform (WebKit bugs, iOS version) before guessing.
+- iPhone home-screen settings (status bar style, etc.) are frozen when the app
+  is added; updates can't change them. Before changing layout for a phone
+  screenshot, measure it in points (iPhone 14 = 844pt tall) to tell a stale
+  install from a real layout problem. Old installs see a "re-add the app" note.
+- Tab bar: slim, icons low, a little padding above the icons (8px).

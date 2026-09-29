@@ -113,7 +113,22 @@ function remind() {
   checkReminder({ series: ctx.series, readings: locate(ctx.schedule).todayReadings }).catch(() => {});
 }
 
+// iPhone home-screen installs made before v16 kept the old translucent
+// status bar (iOS locks it at install), which on iOS 26 leaves a strip under
+// the tab bar. The new setting gives no top safe area, so a top inset in a
+// home-screen app means an old install that should be re-added.
+function detectStaleInstall() {
+  if (navigator.standalone !== true) return false;
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:absolute;visibility:hidden;height:env(safe-area-inset-top, 0px)';
+  document.body.append(probe);
+  const top = probe.offsetHeight;
+  probe.remove();
+  return top > 0;
+}
+
 async function start() {
+  ctx.staleInstall = detectStaleInstall();
   applySettings();
   try {
     ctx.index = await fetchJSON(config.seriesIndex);
