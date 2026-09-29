@@ -26,7 +26,10 @@ look right on **both iPhone and Android** before it goes live.
 
 - The site deploys from `main` via `.github/workflows/deploy.yml`, and only
   when the `test` and `devices` jobs pass.
-- Bump `VERSION` in `sw.js` whenever an app file changes, so installed apps update.
+- Bump `VERSION` in `sw.js` **and** `version` in `config.js` (a test checks they
+  match) whenever an app file changes. Settings shows the version, so the owner
+  can confirm their phone has the update. The service worker is network-first
+  and the app reloads itself when an update takes over.
 
 ## Agents
 

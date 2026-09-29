@@ -89,6 +89,7 @@ export function settingsView(ctx) {
 
       <footer class="about">
         <p><strong>${esc(config.appName)}</strong> · ${esc(config.church)}</p>
+        <p class="small">Version ${esc(config.version)}</p>
         ${esvConfigured() ? `<p class="copyright">${esc(ESV_COPYRIGHT)}</p>` : '<p>Scripture: ESV</p>'}
       </footer>`,
 

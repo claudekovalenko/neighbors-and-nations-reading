@@ -144,7 +144,22 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
+  // When an update takes over, reload once so it's used right away.
+  if (navigator.serviceWorker.controller) {
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
+  }
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});
+  // Home-screen apps often resume instead of relaunching; check for updates then too.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      navigator.serviceWorker.getRegistration().then((r) => r?.update()).catch(() => {});
+    }
+  });
 }
 
 start();

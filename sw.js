@@ -1,5 +1,5 @@
 // Bump VERSION whenever app files change so installed apps pick up the update.
-const VERSION = 'v14';
+const VERSION = 'v15';
 const CACHE = `sermon-series-${VERSION}`;
 
 const SHELL = [
@@ -46,36 +46,21 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== location.origin) return;
 
-  // Series data changes often: try the network first so edits show up,
-  // fall back to the cached copy when offline.
-  if (url.pathname.endsWith('.json')) {
-    e.respondWith(
-      fetch(req)
-        .then((res) => {
-          const copy = res.clone();
-          if (res.ok) caches.open(CACHE).then((c) => c.put(req, copy));
-          return res;
-        })
-        .catch(() => caches.match(req, { ignoreSearch: true })),
-    );
-    return;
-  }
-
-  // Everything else: cache first, then network.
+  // Network first for every app file, so people always get the latest
+  // version when online; the cache is only the offline copy.
   e.respondWith(
-    caches.match(req, { ignoreSearch: true }).then(
-      (hit) =>
-        hit ||
-        fetch(req)
-          .then((res) => {
-            if (res.ok) {
-              const copy = res.clone();
-              caches.open(CACHE).then((c) => c.put(req, copy));
-            }
-            return res;
-          })
-          .catch(() => (req.mode === 'navigate' ? caches.match('index.html') : Response.error())),
-    ),
+    fetch(req, { cache: 'no-cache' })
+      .then((res) => {
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(req, copy));
+        }
+        return res;
+      })
+      .catch(() =>
+        caches.match(req, { ignoreSearch: true })
+          .then((hit) => hit || (req.mode === 'navigate' ? caches.match('index.html') : Response.error())),
+      ),
   );
 });
 

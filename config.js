@@ -3,6 +3,9 @@ export const config = {
   appName: 'Sermon Series',
   church: 'Neighbors and Nations Church',
 
+  // Shown in Settings. Keep in step with VERSION in sw.js (a test checks).
+  version: '15',
+
   // Lists every series and which one opens by default.
   seriesIndex: './series/index.json',
 
