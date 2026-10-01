@@ -1,4 +1,4 @@
-# N&N Sermons
+# N&N Reading Plan
 
 The sermon app for **Neighbors and Nations Church**: an installable web app (PWA) for following each sermon series week by week. The current series is **Romans**, and the app can be reused for future series.
 

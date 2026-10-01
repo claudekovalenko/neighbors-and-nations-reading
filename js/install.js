@@ -59,7 +59,7 @@ export const STEPS = {
   'android-samsung': [`Tap ${MENU_LINES} menu <span class="install-hint">(bottom right)</span>`, `Tap ${b('Add page to')} → ${b('Home screen')}`],
   'android-firefox': [`Tap ${MENU_DOTS} menu`, `Tap ${b('Add to Home screen')}`],
   'android-edge': [`Tap ${MORE_DOTS} menu <span class="install-hint">(bottom)</span>`, `Tap ${b('Add to phone')}`],
-  'desktop-chrome': [`Click ${INSTALL_ICON} in the address bar`, `Or ${MENU_DOTS} menu → ${b('Install N&amp;N Sermons')}`],
+  'desktop-chrome': [`Click ${INSTALL_ICON} in the address bar`, `Or ${MENU_DOTS} menu → ${b('Install N&amp;N Reading Plan')}`],
   'desktop-edge': [`Click ${INSTALL_ICON} in the address bar`, `Or ${MORE_DOTS} menu → ${b('Apps')} → ${b('Install')}`],
   'mac-safari': [`Click ${b('File')} in the menu bar`, `Choose ${b('Add to Dock')}`],
   'desktop-firefox': [`Open this page in ${b('Chrome')} or ${b('Edge')}`, `Then click ${INSTALL_ICON} in the address bar`],

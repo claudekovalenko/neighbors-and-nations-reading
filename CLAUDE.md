@@ -1,4 +1,4 @@
-# N&N Sermons app — notes for anyone (or any Claude session) making updates
+# N&N Reading Plan app — notes for anyone (or any Claude session) making updates
 
 A static PWA (plain HTML/CSS/JS modules, no build step) for Neighbors and
 Nations Church. It is used by many people on phones, so every change must
@@ -84,7 +84,8 @@ agents learn over time. Keep each entry short and concrete.
 - Look: chic, modern, classy. Newsreader (serif) for headings, Inter for text,
   both bundled in fonts/. Soft white cards, no heavy borders, near-black primary
   button, muted gold used sparingly, small uppercase letter-spaced labels.
-- App name is "N&N Sermons" (home-screen label, manifest, page titles). Current series: Romans.
+- App name is "N&N Reading Plan" (manifest, page titles); home-screen label "N&N Reading"
+  (fits on iPhone). Was "N&N Sermons" until v33. Current series: Romans.
 - Typography should feel editorial ("umami"): italic Newsreader for dates and
   subtitles, few all-caps labels (tracking ~.1em), en dashes in verse ranges
   (use `ref()` from js/ui.js for display; keep raw references for links).

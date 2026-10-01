@@ -2,7 +2,7 @@
   "name": "sermon-series",
   "version": "0.1.0",
   "private": true,
-  "description": "N&N Sermons: the Neighbors and Nations Church sermon app (PWA). Currently the Romans series.",
+  "description": "N&N Reading Plan: the Neighbors and Nations Church reading plan app (PWA). Currently the Romans series.",
   "type": "module",
   "scripts": {
     "start": "node scripts/serve.mjs 8080",

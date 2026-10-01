@@ -1,7 +1,7 @@
 {
-  "name": "N&N Sermons",
-  "short_name": "N&N Sermons",
-  "description": "Sermons from Neighbors and Nations Church. Read each week’s passage before Sunday, keep notes, and follow the series. Now: Romans.",
+  "name": "N&N Reading Plan",
+  "short_name": "N&N Reading",
+  "description": "The Neighbors and Nations Church reading plan. Read or listen to each week’s passage before Sunday. Now: Romans.",
   "id": "./",
   "start_url": "./#/",
   "scope": "./",

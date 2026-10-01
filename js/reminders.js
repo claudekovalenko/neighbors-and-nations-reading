@@ -81,7 +81,7 @@ function fold(line) {
 
 export function buildICS({ series, schedule, time, appUrl }) {
   const stamp = `${series.startDate.replace(/-/g, '')}T000000Z`; // fixed, so the files only change with the plan
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//N&N Sermons//EN', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${icsEscape(series.title)}`];
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//N&N Reading Plan//EN', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${icsEscape(series.title)}`];
   readingRuns(schedule).forEach((run, i) => {
     const [start, end] = eventTimes(run.start, time);
     lines.push(

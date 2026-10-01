@@ -1,10 +1,10 @@
 // App-wide settings. Series content lives in /series — see README.md.
 export const config = {
-  appName: 'N&N Sermons',
+  appName: 'N&N Reading Plan',
   church: 'Neighbors and Nations Church',
 
   // Shown in Settings. Keep in step with VERSION in sw.js (a test checks).
-  version: '32',
+  version: '33',
 
   // The live site. Calendar reminders link back here.
   siteUrl: 'https://claudekovalenko.github.io/romans-study-neighbors-and-nations/',
