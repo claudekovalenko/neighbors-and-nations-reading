@@ -27,7 +27,7 @@ export function settingsView(ctx) {
     : ctx.installPrompt
       ? `<button id="install" class="btn btn-primary">Install the app</button>`
       : isIOS()
-        ? '<p>In Safari, tap <strong>Share</strong> then <strong>Add to Home Screen</strong>.</p>'
+        ? '<p>In Safari, tap <strong>Share</strong> (on newer iPhones, tap <strong>•••</strong> first). Then scroll down or tap <strong>More</strong> and choose <strong>Add to Home Screen</strong>.</p>'
         : '<p>Use your browser menu and choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</p>';
 
   const seriesPicker = index.series.length > 1 ? `

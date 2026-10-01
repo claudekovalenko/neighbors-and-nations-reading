@@ -1,5 +1,5 @@
 // Bump VERSION whenever app files change so installed apps pick up the update.
-const VERSION = 'v24';
+const VERSION = 'v25';
 const CACHE = `sermon-series-${VERSION}`;
 
 const SHELL = [
