@@ -1,50 +1,15 @@
 import { toISO, startOfDay } from './schedule.js';
-import { settings, progress } from './store.js';
+import { progress } from './store.js';
 
-export function notificationsSupported() {
-  return 'Notification' in window && 'serviceWorker' in navigator;
-}
-
-export async function requestPermission() {
-  if (!notificationsSupported()) return 'unsupported';
-  if (Notification.permission !== 'default') return Notification.permission;
-  return Notification.requestPermission();
-}
-
-function pastReminderTime(now, hhmm) {
-  const [h, m] = hhmm.split(':').map(Number);
-  return now.getHours() * 60 + now.getMinutes() >= h * 60 + m;
-}
-
-// Browsers can't reliably wake a web app at a set time without a push
-// server, so this nudges whenever the app is opened/resumed after the
-// reminder time and today's reading isn't done. The calendar export is the
-// dependable daily reminder.
-export async function checkReminder({ series, readings, now = new Date() }) {
-  const s = settings.get();
-  const todayISO = toISO(now);
+// Shows how many of today's readings are left on the app icon, where the
+// phone supports it. (No notifications: a web app can't send them on time
+// without a push server; the calendar file is the reminder.)
+export function updateBadge({ series, readings }) {
+  if (!('setAppBadge' in navigator)) return;
   const undone = readings.filter((d) => !progress.isDone(series.id, d.id));
-
-  if ('setAppBadge' in navigator) {
-    try {
-      undone.length ? navigator.setAppBadge(undone.length) : navigator.clearAppBadge();
-    } catch { /* not supported in this context */ }
-  }
-
-  if (!s.remindersOn || !undone.length || s.lastNotified === todayISO) return;
-  if (!notificationsSupported() || Notification.permission !== 'granted') return;
-  if (!pastReminderTime(now, s.reminderTime)) return;
-
-  const day = undone[0];
-  const reg = await navigator.serviceWorker.ready;
-  await reg.showNotification(`${series.title}: today's reading`, {
-    body: day.passage ? `${day.passage}${day.title ? ' — ' + day.title : ''}` : 'Open the app for today\'s reading.',
-    icon: 'icons/icon-192.png',
-    badge: 'icons/icon-192.png',
-    tag: `reading-${todayISO}`,
-    data: { url: `#/week/${day.weekNumber}` },
-  });
-  settings.set({ lastNotified: todayISO });
+  try {
+    undone.length ? navigator.setAppBadge(undone.length) : navigator.clearAppBadge();
+  } catch { /* not supported in this context */ }
 }
 
 // ---------- Calendar (.ics) export ----------

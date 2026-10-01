@@ -1,21 +1,9 @@
 import { settings, progress } from '../store.js';
-import { requestPermission, notificationsSupported, buildICS, downloadFile } from '../reminders.js';
+import { buildICS, downloadFile } from '../reminders.js';
 import { ESV_COPYRIGHT, esvConfigured } from '../esv.js';
 import { config } from '../../config.js';
 import { esc, icon } from '../ui.js';
 import { installBody, isStandalone } from '../install.js';
-
-const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
-
-function permissionNote() {
-  if (!notificationsSupported()) {
-    return isIOS() && !isStandalone()
-      ? 'On iPhone, add this app to your Home Screen first to allow notifications.'
-      : 'This browser doesn’t support notifications — use the calendar option below.';
-  }
-  if (Notification.permission === 'denied') return 'Notifications are blocked. Turn them on in your browser or phone settings.';
-  return 'You’ll get a nudge when you open the app after this time if today’s reading isn’t done. For a reminder that always fires, add the plan to your calendar.';
-}
 
 export function settingsView(ctx) {
   const s = settings.get();
@@ -48,18 +36,9 @@ export function settingsView(ctx) {
       ${seriesPicker}
 
       <section class="card">
-        <h2 class="section-title">${icon('bell')} Daily reminder</h2>
-        <label class="switch">
-          <input type="checkbox" id="reminders" ${s.remindersOn ? 'checked' : ''}>
-          <span>Remind me to read</span>
-        </label>
-        <label class="field">Time <input type="time" id="reminder-time" value="${esc(s.reminderTime)}"></label>
-        <p class="muted small" id="perm-note">${esc(permissionNote())}</p>
-      </section>
-
-      <section class="card">
         <h2 class="section-title">${icon('calendar')} Add to your calendar</h2>
-        <p>Adds a daily reminder to read this week’s passage to your phone’s calendar, with an alert at your reminder time.</p>
+        <p>A daily reminder to read, in your phone’s calendar.</p>
+        <label class="field">Time <input type="time" id="reminder-time" value="${esc(s.reminderTime)}"></label>
         <label class="switch">
           <input type="checkbox" id="ics-sermons" checked>
           <span>Include Sunday sermons</span>
@@ -88,19 +67,8 @@ export function settingsView(ctx) {
       </footer>`,
 
     mount(root) {
-      const note = root.querySelector('#perm-note');
-      const toggle = root.querySelector('#reminders');
-      toggle.addEventListener('change', async () => {
-        if (toggle.checked) {
-          const result = await requestPermission();
-          if (result === 'denied') toggle.checked = false;
-        }
-        settings.set({ remindersOn: toggle.checked, lastNotified: null });
-        note.textContent = permissionNote();
-      });
-
       root.querySelector('#reminder-time').addEventListener('change', (e) => {
-        if (e.target.value) settings.set({ reminderTime: e.target.value, lastNotified: null });
+        if (e.target.value) settings.set({ reminderTime: e.target.value });
       });
 
       root.querySelector('#ics').addEventListener('click', () => {

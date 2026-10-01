@@ -4,7 +4,7 @@ The sermon app for **Neighbors and Nations Church**: an installable web app (PWA
 
 - **Today:** this week's passage with a **Read** button (ESV, only those verses), Mon–Sat check-offs for reading it each day before Sunday, and last week's message.
 - **Weeks:** every sermon in the series. Each one has its date, passage, big idea, the pastor's video from before or after Sunday, the podcast episode, discussion questions, and the day-by-day reading plan.
-- **Settings:** a daily reminder, a calendar export of the whole plan, text size, install help, and a series switcher.
+- **Settings:** install help, a calendar file with a daily reading reminder, text size, and a series switcher.
 
 The app works offline once installed. Progress and notes stay on each person's device, so nobody needs an account.
 
@@ -76,10 +76,8 @@ Write passages the usual way: `Romans 1:1-7`, `Romans 1:18-2:3`, `Psalm 98`, `Lu
 
 ## Reminders
 
-- **Calendar export (the dependable one):** Settings → *Download calendar file* adds every remaining reading to the phone's calendar with an alert at the chosen time. It can also add the Sunday sermons. It works on iPhone and Android.
-- **In-app notification:** if reminders are on and today's reading isn't done, the app sends a notification when it's opened after the reminder time. It also shows a badge on the app icon where supported.
-  On iPhone, the app must first be added to the Home Screen.
-- **Future option:** true scheduled push notifications, sent even when nobody opens the app, need a small server or a push service such as OneSignal or Firebase. The service worker already handles notification taps, so this can be added later.
+- **Calendar file:** Settings → *Download calendar file* adds every remaining reading to the phone's calendar with an alert at the chosen time. It can also add the Sunday sermons. It works on iPhone and Android.
+- The app doesn't send its own notifications: a web app can't send them on time without a push server. A push service such as OneSignal could add that later; the service worker already handles notification taps.
 
 ## Podcast on Spotify
 
@@ -117,7 +115,7 @@ series/index.json                         list of series + which is active
 series/romans/series.json                 the Romans plan (edit this)
 js/schedule.js                            date logic (unit-tested)
 js/reference.js, js/books.js              checks passage references
-js/esv.js, js/reminders.js, js/media.js   ESV text, reminders + .ics, video/Spotify embeds
+js/esv.js, js/reminders.js, js/media.js   ESV text, calendar .ics + icon badge, video/Spotify embeds
 js/views/*.js                             the five screens
 css/app.css                               styles (light + dark)
 icons/                                    app icons (npm run icons re-renders PNGs)

@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 import { buildSchedule, locate, pickCurrentSeries } from './schedule.js';
 import { settings } from './store.js';
-import { checkReminder } from './reminders.js';
+import { updateBadge } from './reminders.js';
 import { esc } from './ui.js';
 import { homeView } from './views/home.js';
 import { weeksListView, weekDetailView } from './views/weeks.js';
@@ -26,7 +26,7 @@ const ctx = {
   schedule: [],
   installPrompt: null,
   rerender: () => render({ keepScroll: true }),
-  onProgressChange: () => remind(),
+  onProgressChange: () => badge(),
   applySettings,
   switchSeries,
 };
@@ -107,9 +107,9 @@ function render({ keepScroll = false } = {}) {
   lastPath = path;
 }
 
-function remind() {
+function badge() {
   if (!ctx.series) return;
-  checkReminder({ series: ctx.series, readings: locate(ctx.schedule).todayReadings }).catch(() => {});
+  updateBadge({ series: ctx.series, readings: locate(ctx.schedule).todayReadings });
 }
 
 // iPhone home-screen installs made before v16 kept the old translucent
@@ -139,14 +139,14 @@ async function start() {
   }
   window.addEventListener('hashchange', () => render());
   render();
-  remind();
+  badge();
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
       // The date may have rolled over — possibly into the next series.
       const id = chooseSeries();
       if (id !== ctx.series.id) useSeries(id);
       render({ keepScroll: true });
-      remind();
+      badge();
     }
   });
 }

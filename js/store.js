@@ -23,10 +23,8 @@ function write(key, value) {
 export const settings = {
   defaults: {
     seriesId: null,
-    remindersOn: false,
     reminderTime: '07:00',
     textSize: 'm',
-    lastNotified: null,
     installDismissed: false,
   },
   get() {

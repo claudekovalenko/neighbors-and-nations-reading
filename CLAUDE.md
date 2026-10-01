@@ -101,3 +101,5 @@ agents learn over time. Keep each entry short and concrete.
   STEPS in js/install.js, two short steps each, with the browser's own symbols.
 - Install steps live at the top of Settings too (for that person's browser), so anyone
   who taps X can find them. After X, Today briefly says "Install anytime from Settings".
+- No in-app notification reminders (they can't fire on time without a push server).
+  The calendar file in Settings is the reminder.
