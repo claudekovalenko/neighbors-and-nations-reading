@@ -21,9 +21,12 @@ export function settingsView(ctx) {
   const s = settings.get();
   const { series, index } = ctx;
 
-  const install = isStandalone()
-    ? '<p class="muted">Installed — you’re using the app.</p>'
-    : installBody(ctx, 'install');
+  // Steps for this person's browser; gone once they're in the installed app.
+  const install = isStandalone() ? '' : `
+    <section class="card">
+      <h2 class="section-title">Get the app</h2>
+      ${installBody(ctx, 'install')}
+    </section>`;
 
   const seriesPicker = index.series.length > 1 ? `
     <section class="card">
@@ -41,6 +44,7 @@ export function settingsView(ctx) {
     html: `
       <header class="page-head"><h1>Settings</h1></header>
 
+      ${install}
       ${seriesPicker}
 
       <section class="card">
@@ -70,11 +74,6 @@ export function settingsView(ctx) {
             <label><input type="radio" name="size" value="${k}" ${s.textSize === k ? 'checked' : ''}><span>${{ s: 'Small', m: 'Medium', l: 'Large', xl: 'Larger' }[k]}</span></label>`).join('')}
         </div>
       </section>`: ''}
-
-      <section class="card">
-        <h2 class="section-title">Get the app</h2>
-        ${install}
-      </section>
 
       <section class="card">
         <h2 class="section-title">Your data</h2>

@@ -78,8 +78,16 @@ export function installBody(ctx, buttonId = 'install-app') {
   return `<ol class="install-steps">${steps.map((s) => `<li>${s}</li>`).join('')}</ol>`;
 }
 
+// After "Not now", say once where the steps live.
+let justDismissed = false;
+
 export function installCardHtml(ctx) {
-  if (isStandalone() || settings.get().installDismissed) return '';
+  if (isStandalone()) return '';
+  if (justDismissed) {
+    justDismissed = false;
+    return '<p class="install-hint install-moved">Install anytime from <a href="#/settings">Settings</a>.</p>';
+  }
+  if (settings.get().installDismissed) return '';
   return `
     <section class="card install-card" aria-label="Get the app">
       <div class="install-head">
@@ -97,6 +105,7 @@ export function installCardHtml(ctx) {
 export function mountInstall(root, ctx) {
   root.querySelector('#install-dismiss')?.addEventListener('click', () => {
     settings.set({ installDismissed: true });
+    justDismissed = true;
     ctx.rerender();
   });
   root.querySelector('#install-app')?.addEventListener('click', async () => {

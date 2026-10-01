@@ -201,9 +201,14 @@ test.describe('get-the-app card', () => {
     await expect(page.locator('.install-card')).toBeVisible();
     await page.locator('#install-dismiss').click();
     await expect(page.locator('.install-card')).toHaveCount(0);
+    await expect(page.locator('.install-moved')).toBeVisible();
+    await page.locator('.install-moved a').click();
+    await expect(page.locator('#install, .install-steps').first()).toBeVisible();
+    await page.goto('/#/');
     await page.reload();
     await expect(page.locator('.hero')).toBeVisible();
     await expect(page.locator('.install-card')).toHaveCount(0);
+    await expect(page.locator('.install-moved')).toHaveCount(0);
   });
 
   test('iPhone/iPad: shows the Share → Add to Home Screen steps', async ({ page, browserName, isMobile }) => {

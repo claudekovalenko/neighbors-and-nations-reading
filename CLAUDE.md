@@ -99,3 +99,5 @@ agents learn over time. Keep each entry short and concrete.
 - Install instructions must fit every browser (iPhone Safari/Chrome/Firefox/Edge,
   Android Chrome/Samsung/Firefox/Edge, desktop Chrome/Edge/Firefox, Mac Safari):
   STEPS in js/install.js, two short steps each, with the browser's own symbols.
+- Install steps live at the top of Settings too (for that person's browser), so anyone
+  who taps X can find them. After X, Today briefly says "Install anytime from Settings".

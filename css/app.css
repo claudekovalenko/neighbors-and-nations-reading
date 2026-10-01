@@ -335,6 +335,8 @@ main {
 .install-steps strong { color: var(--ink); font-weight: 600; }
 .install-hint { color: var(--muted); font-size: .85em; }
 .install-hint strong { color: var(--muted); letter-spacing: .05em; }
+.install-moved { margin: -4px 0 4px; text-align: center; }
+.install-moved a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); }
 .share-icon { width: 1.15em; height: 1.15em; vertical-align: -0.22em; color: #0a84ff; margin: 0 2px; }
 .add-icon { width: 1.15em; height: 1.15em; vertical-align: -0.22em; color: var(--ink); margin: 0 2px; }
 .menu-icon { width: 1.1em; height: 1.1em; vertical-align: -0.2em; color: var(--ink); margin: 0 2px; }
