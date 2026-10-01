@@ -114,3 +114,5 @@ agents learn over time. Keep each entry short and concrete.
   built by CI on every publish and every morning (not in git). Google's add-event
   link breaks on iPhone, so iPhone/iPad show one "Add to Calendar" button (the
   .ics); a home-screen iPhone app hands the file to Safari (x-safari-https).
+- Live link: https://claudekovalenko.github.io/neighbors-and-nations-reading/ (repo renamed
+  from romans-study-neighbors-and-nations in v35; old home-screen installs must be re-added).

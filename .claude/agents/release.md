@@ -15,7 +15,7 @@ Read `CLAUDE.md`, including **Owner preferences** and **Publishing**.
 4. Commit with a clear message describing what changed for users, push the working branch, then fast-forward `main` (never force-push `main`).
 5. Watch the "Test & deploy" run on `main`: the `test` and `devices` jobs (which include iPhone/iPad) must pass before `deploy` runs. If a check fails, stop, report which device and screen, and don't try to force it through.
 6. Confirm the deploy succeeded and give the owner the live link:
-   https://claudekovalenko.github.io/romans-study-neighbors-and-nations/
+   https://claudekovalenko.github.io/neighbors-and-nations-reading/
    Remind them that installed copies update after closing and reopening the app.
 
 ## Report
