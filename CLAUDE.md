@@ -88,3 +88,6 @@ agents learn over time. Keep each entry short and concrete.
 - Typography should feel editorial ("umami"): italic Newsreader for dates and
   subtitles, few all-caps labels (tracking ~.1em), en dashes in verse ranges
   (use `ref()` from js/ui.js for display; keep raw references for links).
+- No series subtitle/tagline under the title. Type should be on the small,
+  refined side (15px body, ~1.6rem passage heading, ~2.8rem title).
+- Tab bar height: about 73pt on iPhone (48pt row, 10pt above icons). Not thinner.

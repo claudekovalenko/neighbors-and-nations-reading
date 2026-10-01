@@ -42,7 +42,7 @@
   --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --serif: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --scripture-size: 1.15rem;
-  --tabbar-h: 44px;
+  --tabbar-h: 48px;
   color-scheme: light;
 }
 
@@ -88,7 +88,7 @@ body {
   margin: 0;
   background: var(--surface);
   color: var(--ink);
-  font: 400 16px/1.6 var(--sans);
+  font: 400 15px/1.55 var(--sans);
   letter-spacing: -0.006em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -99,8 +99,8 @@ body {
 
 a { color: var(--ink); text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); text-underline-offset: 3px; }
 h1, h2, h3 { font-family: var(--serif); font-optical-sizing: auto; line-height: 1.12; margin: 0 0 .35em; font-weight: 500; letter-spacing: -0.012em; }
-h1 { font-size: clamp(2rem, 7vw, 2.5rem); }
-h2 { font-size: 1.45rem; }
+h1 { font-size: clamp(1.75rem, 6vw, 2.1rem); }
+h2 { font-size: 1.25rem; }
 p { margin: 0 0 .8em; }
 
 .icon { width: 1.15em; height: 1.15em; flex: none; vertical-align: -0.2em; stroke-width: 1.75; }
@@ -127,7 +127,7 @@ p { margin: 0 0 .8em; }
   /* Slim, with the icons low: on iPhones with a home line the labels sit just
      above it (the owner wants them lower than Apple's default spacing); 6px
      below on phones without one. */
-  padding-top: 8px;
+  padding-top: 10px;
   padding-bottom: max(6px, calc(env(safe-area-inset-bottom) - 20px));
   padding-inline: max(0px, calc((100% - 680px) / 2));
   background: var(--surface);
@@ -158,49 +158,48 @@ main {
 
 .eyebrow {
   display: block; margin: 0 0 .6em;
-  font-size: .66rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
   color: var(--muted);
 }
 /* A small caps label paired with an italic serif date, like a magazine dateline. */
 .card-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 .45em; }
 .card-meta .eyebrow { margin: 0; color: var(--accent-ink); }
-.meta-date { font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--muted); letter-spacing: 0; }
-.lead { font-size: 1.05rem; color: var(--ink-2); }
+.meta-date { font-family: var(--serif); font-style: italic; font-size: .92rem; color: var(--muted); letter-spacing: 0; }
+.lead { font-size: .98rem; color: var(--ink-2); }
 .muted { color: var(--muted); }
 .small { font-size: .85rem; }
 .passage { font-family: var(--serif); }
 
-.hero { padding: 18px 0 24px; }
-.hero h1 { font-size: clamp(2.9rem, 14vw, 3.8rem); font-weight: 400; letter-spacing: -0.025em; line-height: 1; margin-bottom: .18em; }
-.hero-sub { font-family: var(--serif); font-style: italic; font-size: 1.2rem; line-height: 1.35; color: var(--ink-2); margin: 0 0 16px; max-width: 22em; letter-spacing: 0; }
-.rule { display: block; width: 32px; height: 1.5px; background: var(--accent); margin: 0 0 14px; }
-.hero-date { font-size: .82rem; font-weight: 500; color: var(--muted); margin: 0; }
+.hero { padding: 12px 0 20px; }
+.hero h1 { font-size: clamp(2.3rem, 10.5vw, 2.8rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1; margin-bottom: .32em; }
+.rule { display: block; width: 28px; height: 1.5px; background: var(--accent); margin: 0 0 12px; }
+.hero-date { font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--muted); margin: 0; letter-spacing: 0; }
 
 .page-head { margin: 8px 0 22px; }
 .page-head h1 { font-weight: 400; }
 
 .card {
   background: var(--surface); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 24px 22px; margin: 0 0 16px;
+  box-shadow: var(--shadow); padding: 22px 20px; margin: 0 0 14px;
 }
 @media (prefers-color-scheme: dark) { .card { border: 1px solid var(--line); } }
 .card > :last-child { margin-bottom: 0; }
-.card-feature h2.passage { font-size: 2rem; font-weight: 500; margin-bottom: .55em; }
+.card-feature h2.passage { font-size: 1.6rem; font-weight: 500; margin-bottom: .6em; }
 
 .big-idea {
   margin: 14px 0 18px; padding: 2px 0 2px 16px;
   border-left: 2px solid var(--accent);
-  font-family: var(--serif); font-size: 1.25rem; font-style: italic; color: var(--ink-2);
+  font-family: var(--serif); font-size: 1.1rem; font-style: italic; color: var(--ink-2);
 }
 
-.section-title { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; margin: 28px 0 12px; }
+.section-title { display: flex; align-items: center; gap: 10px; font-size: 1.08rem; margin: 28px 0 12px; }
 .card .section-title { margin-top: 0; }
 .section-title .icon { color: var(--muted); }
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 50px; padding: 12px 20px; border-radius: var(--radius-sm); border: 1px solid transparent;
-  font: 500 1rem/1.2 var(--sans); letter-spacing: .01em; text-decoration: none; cursor: pointer;
+  min-height: 46px; padding: 11px 18px; border-radius: var(--radius-sm); border: 1px solid transparent;
+  font: 500 .93rem/1.2 var(--sans); letter-spacing: .01em; text-decoration: none; cursor: pointer;
 }
 .btn-primary { background: var(--brand); color: var(--brand-ink); }
 .btn-secondary { background: transparent; color: var(--ink); border-color: var(--line); }
@@ -234,17 +233,17 @@ main {
 .part-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 26px 2px 4px; }
 .part-head:first-child { margin-top: 0; }
 .part-head h2 { font-family: var(--sans); font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin: 0; }
-.part-head span { font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--muted); }
+.part-head span { font-family: var(--serif); font-style: italic; font-size: .86rem; color: var(--muted); }
 .week-row.is-current { box-shadow: inset 3px 0 0 var(--accent); }
 .week-num {
   flex: none; width: 28px; text-align: center;
-  font-family: var(--serif); font-size: 1.35rem; font-weight: 400; color: var(--accent-ink);
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 400; color: var(--accent-ink);
 }
 .week-row.is-past .week-num { color: var(--muted); }
 .week-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-.week-date { font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--muted); letter-spacing: 0; line-height: 1.3; }
-.week-title { font-family: var(--serif); font-size: 1.12rem; font-weight: 500; }
-.week-sub { font-size: .88rem; color: var(--ink-2); }
+.week-date { font-family: var(--serif); font-style: italic; font-size: .86rem; color: var(--muted); letter-spacing: 0; line-height: 1.3; }
+.week-title { font-family: var(--serif); font-size: 1.02rem; font-weight: 500; }
+.week-sub { font-size: .82rem; color: var(--ink-2); }
 .row-chevron { color: var(--muted); width: 1em; height: 1em; }
 
 /* ---------- Mon–Sat read marks ---------- */
@@ -257,7 +256,7 @@ main {
 }
 .dot:disabled { cursor: default; opacity: .45; }
 .dot-mark {
-  width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--muted) 55%, var(--line));
+  width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--muted) 55%, var(--line));
   display: grid; place-items: center; color: var(--done-ink);
   transition: background-color .15s, border-color .15s;
 }
@@ -265,7 +264,7 @@ main {
 .dot.is-today .dot-mark { border-color: var(--accent); border-width: 2px; }
 .dot.is-today .dot-day { color: var(--ink); }
 .dot.is-done .dot-mark { background: var(--done); border-color: var(--done); }
-.dot-day { font-size: .74rem; font-weight: 500; letter-spacing: 0; }
+.dot-day { font-size: .7rem; font-weight: 500; letter-spacing: 0; }
 
 .questions { padding-left: 1.3em; }
 .questions li { margin-bottom: .6em; }
@@ -296,7 +295,7 @@ main {
 .read-actions .btn-primary { width: 100%; }
 .alt-read {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px;
-  font-weight: 500; font-size: .9rem; color: var(--ink-2); text-decoration: none;
+  font-weight: 500; font-size: .84rem; color: var(--ink-2); text-decoration: none;
 }
 .alt-read .icon { width: .9em; height: .9em; }
 
@@ -307,8 +306,8 @@ main {
 /* Last thing in a card: the card's own edge is the bottom line. */
 .card .notes:last-child { border-bottom: 0; margin-bottom: -8px; }
 .notes summary {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 50px;
-  font-weight: 500; cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px;
+  font-weight: 500; font-size: .93rem; cursor: pointer; list-style: none;
 }
 .notes summary::-webkit-details-marker { display: none; }
 .notes-chevron { color: var(--muted); transition: transform .2s; }

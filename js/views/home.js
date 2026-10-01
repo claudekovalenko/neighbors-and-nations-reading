@@ -20,7 +20,6 @@ export function homeView(ctx) {
   parts.push(`
     <header class="hero">
       <h1>${esc(series.title)}</h1>
-      ${series.subtitle ? `<p class="hero-sub">${esc(series.subtitle)}</p>` : ''}
       <span class="rule" aria-hidden="true"></span>
       <p class="hero-date">${esc(fmtLong(loc.today))}</p>
     </header>`);
