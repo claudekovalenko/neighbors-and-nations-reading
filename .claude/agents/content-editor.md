@@ -27,4 +27,4 @@ List exactly what changed, week by week, plus anything you had to guess.
 ## Learn
 If the owner corrected you or stated a new preference, add it as one line under **Owner preferences** in `CLAUDE.md`.
 
-After any change to dates or weeks, run `npm run calendars` to rebuild the reminder files in cal/.
+Reminder calendar files (cal/) rebuild automatically on every publish and every morning; nothing to do after date changes.

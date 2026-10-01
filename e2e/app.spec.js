@@ -233,13 +233,26 @@ test.describe('get-the-app card', () => {
 
 
 test.describe('daily reminder', () => {
-  test('adds to the right calendar at the chosen time', async ({ page, request }) => {
+  test('calendar buttons use the chosen time; the file starts today', async ({ page, request, isMobile, browserName }) => {
     await open(page, '#/settings');
     await page.locator('#reminder-time').selectOption('06:30');
     await expect(page.locator('#cal-apple')).toHaveAttribute('href', 'cal/romans-0630.ics');
-    await expect(page.locator('#cal-google')).toHaveAttribute('href', /calendar\.google\.com.*T063000/);
+    const iphone = browserName === 'webkit' && isMobile;
+    if (iphone) {
+      await expect(page.locator('#cal-apple')).toHaveText(/Add to Calendar/);
+      await expect(page.locator('#cal-google')).toHaveCount(0); // Google's link doesn't work on iPhone
+    } else {
+      await expect(page.locator('#cal-google')).toHaveAttribute('href', /calendar\.google\.com.*T063000/);
+    }
     const file = await request.get('/cal/romans-0630.ics');
     expect(file.ok()).toBe(true);
-    expect(await file.text()).toContain('DTSTART:20260907T063000');
+    const text = await file.text();
+    const first = text.match(/DTSTART:(\d{8})T063000/)?.[1];
+    if (first) { // after the series ends the file is empty
+      const now = new Date();
+      const today = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+      expect(first >= today).toBe(true);
+      expect(text).toContain('TRIGGER:PT0M');
+    }
   });
 });

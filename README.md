@@ -76,7 +76,7 @@ Write passages the usual way: `Romans 1:1-7`, `Romans 1:18-2:3`, `Psalm 98`, `Lu
 
 ## Reminders
 
-- **Daily reminder:** in Settings people pick a time and tap *Apple Calendar* (opens a ready-made file from `cal/`) or *Google Calendar*. The reminder repeats Mon–Sat at that time. After changing series dates, run `npm run calendars` to rebuild `cal/`.
+- **Daily reminder:** in Settings people pick a time and tap *Add to Calendar* (iPhone/iPad) or *Google Calendar* / *Apple, Outlook or other* (elsewhere). The calendar file has one alerted event per reading day from today on; `cal/` is built by the publish workflow every morning (`npm run calendars` builds it locally).
 - The app doesn't send its own notifications: a web app can't send them on time without a push server. A push service such as OneSignal could add that later; the service worker already handles notification taps.
 
 ## Podcast on Spotify

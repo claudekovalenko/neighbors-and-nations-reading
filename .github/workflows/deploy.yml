@@ -6,12 +6,15 @@ name: Test & deploy
 #             and iPad (Safari engine) and desktop; screenshots of every
 #             screen are saved in the "device-report" download on the run.
 #   deploy  — publishes to GitHub Pages, only from main and only if both pass.
+#             Also runs every morning so the calendar files (cal/) start today.
 
 on:
   push:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: '7 8 * * *' # every morning (≈4am US Eastern): refresh the calendar files
 
 permissions:
   contents: read
@@ -61,6 +64,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run calendars # reminder files, from today on
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

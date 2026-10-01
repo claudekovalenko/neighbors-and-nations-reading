@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { validateSeries } from '../js/validate.js';
 import { buildICS, readingRuns, googleCalendar, snapTime, timeLabel } from '../js/reminders.js';
 import { buildSchedule, toISO } from '../js/schedule.js';
@@ -20,19 +20,21 @@ for (const entry of index.series) {
   });
 }
 
-test('calendar reminders: one alarmed repeating event per stretch of readings', () => {
+test('calendar file: one alarmed event per reading day from today on', () => {
   const series = JSON.parse(readFileSync('series/romans/series.json', 'utf8'));
   const schedule = buildSchedule(series);
-  const runs = readingRuns(schedule);
-  assert.equal(runs.length, 3); // Romans has three parts
-  assert.equal(runs.reduce((n, r) => n + r.dates.length, 0), schedule.flatMap((w) => w.days).length);
-  assert.ok(runs.every((r) => r.byday === 'MO,TU,WE,TH,FR,SA'));
-  const ics = buildICS({ series, schedule, time: '07:30', appUrl: 'https://example.org/' });
-  assert.equal(ics.match(/BEGIN:VEVENT/g).length, 3);
-  assert.equal(ics.match(/TRIGGER:PT0M/g).length, 3);
-  assert.ok(ics.includes('DTSTART:20260907T073000'));
-  assert.ok(ics.includes('RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;COUNT=60'));
-  assert.ok(ics.split('\r\n').every((l) => l.length <= 75));
+  const from = new Date(2026, 9, 1); // Thursday of week 4
+  const ics = buildICS({ series, schedule, time: '07:30', appUrl: 'https://example.org/', from });
+  const left = schedule.flatMap((w) => w.days).filter((d) => d.date >= from).length;
+  assert.equal(ics.match(/BEGIN:VEVENT/g).length, left);
+  assert.equal(ics.match(/TRIGGER:PT0M/g).length, left);
+  const starts = [...ics.matchAll(/DTSTART:(\d{8})T073000/g)].map((m) => m[1]);
+  assert.equal(starts[0], '20261001'); // today first, nothing earlier
+  assert.deepEqual(starts.slice(0, 4), ['20261001', '20261002', '20261003', '20261005']); // no Sundays
+  assert.ok(ics.includes('SUMMARY:Read Romans 2:1–29'));
+  assert.ok(!ics.includes('RRULE'));
+  assert.ok(ics.split('\r\n').every((l) => new TextEncoder().encode(l).length <= 75));
+  assert.equal(buildICS({ series, schedule, time: '07:30', appUrl: '', from: new Date(2028, 0, 1) }).match(/BEGIN:VEVENT/g), null);
 });
 
 test('Google Calendar link starts at today and covers the current part', () => {
@@ -57,10 +59,8 @@ test('reminder times snap to the offered half hours', () => {
   assert.equal(timeLabel('12:00'), '12:00 PM');
 });
 
-test('calendar files in cal/ are up to date (npm run calendars)', () => {
-  const files = calendarFiles();
-  assert.deepEqual(readdirSync('cal').sort(), Object.keys(files).map((f) => f.slice(4)).sort());
-  for (const [path, text] of Object.entries(files)) {
-    assert.equal(readFileSync(path, 'utf8'), text, `${path} is stale — run npm run calendars`);
-  }
+test('npm run calendars builds one file per offered time', () => {
+  const files = calendarFiles(new Date(2026, 9, 1));
+  assert.equal(Object.keys(files).length, 35);
+  assert.ok(files['cal/romans-0700.ics'].includes('DTSTART:20261001T070000'));
 });

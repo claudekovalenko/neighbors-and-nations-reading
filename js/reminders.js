@@ -62,6 +62,7 @@ function eventTimes(date, time) {
 }
 
 const rrule = (run, dates) => `RRULE:FREQ=WEEKLY;BYDAY=${run.byday};COUNT=${dates.length}`;
+const dash = (text) => String(text ?? '').replace(/(\d)\s*-\s*(\d)/g, '$1\u2013$2');
 const summary = (series) => `${series.title}: this week’s passage`;
 
 function icsEscape(text) {
@@ -71,33 +72,44 @@ function icsEscape(text) {
 // Long lines must be folded at 75 octets per RFC 5545.
 function fold(line) {
   const out = [];
-  while (line.length > 74) {
-    out.push(line.slice(0, 74));
-    line = ' ' + line.slice(74);
+  let cur = '';
+  for (const ch of line) {
+    const next = cur + ch;
+    if (new TextEncoder().encode(next).length > (out.length ? 74 : 75)) {
+      out.push(cur);
+      cur = ch;
+    } else {
+      cur = next;
+    }
   }
-  out.push(line);
-  return out.join('\r\n');
+  out.push(cur);
+  return out.join('\r\n ');
 }
 
-export function buildICS({ series, schedule, time, appUrl }) {
-  const stamp = `${series.startDate.replace(/-/g, '')}T000000Z`; // fixed, so the files only change with the plan
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//N&N Reading Plan//EN', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${icsEscape(series.title)}`];
-  readingRuns(schedule).forEach((run, i) => {
-    const [start, end] = eventTimes(run.start, time);
+// One event per reading day from `from` on, titled with that week's passage,
+// with an alert at the chosen time. (Plain events, not repeating rules:
+// every calendar shows and imports them the same way.)
+export function buildICS({ series, schedule, time, appUrl, from = new Date() }) {
+  const start = startOfDay(from);
+  const stamp = `${ymd(start)}T000000Z`;
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//N&N Reading Plan//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:${icsEscape(series.title)}`];
+  for (const day of schedule.flatMap((w) => w.days).sort((a, b) => a.date - b.date)) {
+    if (day.date < start) continue;
+    const [dtStart, dtEnd] = eventTimes(day.date, time);
+    const title = `Read ${dash(day.passage) || series.title}`;
     lines.push(
       'BEGIN:VEVENT',
-      `UID:${series.id}-reading-${i + 1}@nn-sermons`,
+      `UID:${series.id}-${day.id}@nn-reading-plan`,
       `DTSTAMP:${stamp}`,
-      `DTSTART:${start}`,
-      `DTEND:${end}`,
-      rrule(run, run.dates),
-      `SUMMARY:${icsEscape(summary(series))}`,
+      `DTSTART:${dtStart}`,
+      `DTEND:${dtEnd}`,
+      `SUMMARY:${icsEscape(title)}`,
       `DESCRIPTION:${icsEscape(appUrl)}`,
       `URL:${appUrl}`,
-      'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${icsEscape(summary(series))}`, 'TRIGGER:PT0M', 'END:VALARM',
+      'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${icsEscape(title)}`, 'TRIGGER:PT0M', 'END:VALARM',
       'END:VEVENT',
     );
-  });
+  }
   lines.push('END:VCALENDAR');
   return lines.map(fold).join('\r\n') + '\r\n';
 }

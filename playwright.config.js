@@ -18,7 +18,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: `node scripts/serve.mjs ${PORT}`,
+    command: `node scripts/calendars.mjs && node scripts/serve.mjs ${PORT}`,
     url: `http://localhost:${PORT}/index.html`,
     reuseExistingServer: !process.env.CI,
   },

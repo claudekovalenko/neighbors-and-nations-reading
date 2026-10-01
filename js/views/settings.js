@@ -3,29 +3,42 @@ import { REMINDER_TIMES, timeLabel, snapTime, calendarFile, googleCalendar } fro
 import { ESV_COPYRIGHT, esvConfigured } from '../esv.js';
 import { config } from '../../config.js';
 import { esc, icon, fmtShort } from '../ui.js';
-import { installBody, isStandalone } from '../install.js';
+import { installBody, isStandalone, isIOS } from '../install.js';
 
 export function settingsView(ctx) {
   const s = settings.get();
   const { series, index } = ctx;
 
-  // Daily reminder: Apple Calendar on iPhone/Mac, Google Calendar elsewhere,
-  // with the other as a small link.
+  // Daily reminder. iPhone/iPad: one button that opens the calendar file
+  // (iPhone's Calendar shows "Add All"; Google's add-event link doesn't
+  // work on iPhone). Elsewhere: Google Calendar, plus the file for Apple,
+  // Outlook or Samsung.
   const time = snapTime(s.reminderTime);
   const google = googleCalendar({ series, schedule: ctx.schedule, time, appUrl: config.siteUrl });
   const ics = calendarFile(series.id, time);
-  const reminder = google ? `
-    <section class="card">
-      <h2 class="section-title">${icon('bell')} Daily reminder</h2>
+  // A home-screen iPhone app can't open calendar files itself; hand it to Safari.
+  const icsHref = isIOS() && isStandalone() ? `x-safari-${new URL(ics, config.siteUrl).href}` : ics;
+  const timePicker = `
       <label class="field">Time
         <select id="reminder-time">${REMINDER_TIMES.map((t) => `<option value="${t}" ${t === time ? 'selected' : ''}>${timeLabel(t)}</option>`).join('')}</select>
-      </label>
+      </label>`;
+  const reminder = !google ? '' : isIOS() ? `
+    <section class="card">
+      <h2 class="section-title">${icon('bell')} Daily reminder</h2>
+      ${timePicker}
       <div class="cal-buttons">
-        <a class="btn btn-secondary" id="cal-apple" href="${esc(ics)}">${icon('calendar')} Apple Calendar</a>
+        <a class="btn btn-primary" id="cal-apple" href="${esc(icsHref)}">${icon('calendar')} Add to Calendar</a>
+      </div>
+    </section>` : `
+    <section class="card">
+      <h2 class="section-title">${icon('bell')} Daily reminder</h2>
+      ${timePicker}
+      <div class="cal-buttons">
         <a class="btn btn-secondary" id="cal-google" href="${esc(google.url)}" target="_blank" rel="noopener">${icon('calendar')} Google Calendar</a>
+        <a class="btn btn-secondary" id="cal-apple" href="${esc(ics)}" download>${icon('calendar')} Apple, Outlook or other</a>
       </div>
       <p class="muted small cal-note">Google: through ${esc(fmtShort(google.until))}</p>
-    </section>` : '';
+    </section>`;
 
   // Steps for this person's browser; gone once they're in the installed app.
   const install = isStandalone() ? '' : `
