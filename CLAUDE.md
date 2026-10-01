@@ -96,3 +96,6 @@ agents learn over time. Keep each entry short and concrete.
   Android/Chrome, Share → Add to Home Screen steps on iPhone. Hidden in the
   installed app and after 'Not now'.
 - Instructions use as few words as possible (e.g. iPhone install: "Tap Share (or ••• first)" / "Scroll to Add to Home Screen").
+- Install instructions must fit every browser (iPhone Safari/Chrome/Firefox/Edge,
+  Android Chrome/Samsung/Firefox/Edge, desktop Chrome/Edge/Firefox, Mac Safari):
+  STEPS in js/install.js, two short steps each, with the browser's own symbols.

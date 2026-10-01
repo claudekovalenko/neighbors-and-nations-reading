@@ -337,6 +337,8 @@ main {
 .install-hint strong { color: var(--muted); letter-spacing: .05em; }
 .share-icon { width: 1.15em; height: 1.15em; vertical-align: -0.22em; color: #0a84ff; margin: 0 2px; }
 .add-icon { width: 1.15em; height: 1.15em; vertical-align: -0.22em; color: var(--ink); margin: 0 2px; }
+.menu-icon { width: 1.1em; height: 1.1em; vertical-align: -0.2em; color: var(--ink); margin: 0 2px; }
+.card .install-steps { margin-top: 14px; }
 .reinstall-note { box-shadow: inset 3px 0 0 var(--accent), var(--shadow); }
 .reinstall-note p { margin: 0; }
 

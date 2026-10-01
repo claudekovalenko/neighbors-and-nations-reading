@@ -3,10 +3,8 @@ import { requestPermission, notificationsSupported, buildICS, downloadFile } fro
 import { ESV_COPYRIGHT, esvConfigured } from '../esv.js';
 import { config } from '../../config.js';
 import { esc, icon } from '../ui.js';
-import { SHARE_ICON, ADD_ICON } from '../install.js';
+import { installBody, isStandalone } from '../install.js';
 
-const isStandalone = () =>
-  matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
 
 function permissionNote() {
@@ -25,11 +23,7 @@ export function settingsView(ctx) {
 
   const install = isStandalone()
     ? '<p class="muted">Installed — you’re using the app.</p>'
-    : ctx.installPrompt
-      ? `<button id="install" class="btn btn-primary">Install the app</button>`
-      : isIOS()
-        ? `<p>Tap ${SHARE_ICON} <strong>Share</strong> (or <strong>•••</strong> first), then scroll to ${ADD_ICON} <strong>Add to Home Screen</strong>.</p>`
-        : '<p>Use your browser menu and choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</p>';
+    : installBody(ctx, 'install');
 
   const seriesPicker = index.series.length > 1 ? `
     <section class="card">
