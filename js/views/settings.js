@@ -1,4 +1,4 @@
-import { settings, progress } from '../store.js';
+import { settings } from '../store.js';
 import { REMINDER_TIMES, timeLabel, snapTime, calendarFile, googleCalendar } from '../reminders.js';
 import { ESV_COPYRIGHT, esvConfigured } from '../esv.js';
 import { config } from '../../config.js';
@@ -13,23 +13,18 @@ export function settingsView(ctx) {
   // with the other as a small link.
   const time = snapTime(s.reminderTime);
   const google = googleCalendar({ series, schedule: ctx.schedule, time, appUrl: config.siteUrl });
-  const apple = /iphone|ipad|ipod|macintosh/i.test(navigator.userAgent);
   const ics = calendarFile(series.id, time);
-  const googleLink = (cls, label) => `<a class="${cls}" id="cal-google" href="${esc(google.url)}" target="_blank" rel="noopener">${label}</a>`;
   const reminder = google ? `
     <section class="card">
       <h2 class="section-title">${icon('bell')} Daily reminder</h2>
       <label class="field">Time
         <select id="reminder-time">${REMINDER_TIMES.map((t) => `<option value="${t}" ${t === time ? 'selected' : ''}>${timeLabel(t)}</option>`).join('')}</select>
       </label>
-      <div class="read-actions">
-        ${apple
-          ? `<a class="btn btn-primary" id="cal-apple" href="${esc(ics)}">${icon('calendar')} Add to Apple Calendar</a>
-             ${googleLink('alt-read', `Google Calendar ${icon('external')}`)}`
-          : `${googleLink('btn btn-primary', `${icon('calendar')} Add to Google Calendar`)}
-             <a class="alt-read" id="cal-other" href="${esc(ics)}" download>Other calendar app</a>`}
+      <div class="cal-buttons">
+        <a class="btn btn-secondary" id="cal-apple" href="${esc(ics)}">${icon('calendar')} Apple Calendar</a>
+        <a class="btn btn-secondary" id="cal-google" href="${esc(google.url)}" target="_blank" rel="noopener">${icon('calendar')} Google Calendar</a>
       </div>
-      ${apple ? '' : `<p class="muted small cal-note">Mon–Sat until ${esc(fmtShort(google.until))}</p>`}
+      <p class="muted small cal-note">Google: through ${esc(fmtShort(google.until))}</p>
     </section>` : '';
 
   // Steps for this person's browser; gone once they're in the installed app.
@@ -68,12 +63,6 @@ export function settingsView(ctx) {
         </div>
       </section>`: ''}
 
-      <section class="card">
-        <h2 class="section-title">Your data</h2>
-        <p class="muted small">Progress and notes stay on this device only.</p>
-        <button id="reset" class="btn btn-danger">Reset ${esc(series.title)} progress</button>
-      </section>
-
       <footer class="about">
         <p><strong>${esc(config.appName)}</strong> · ${esc(config.church)}</p>
         <p class="small">Version ${esc(config.version)}</p>
@@ -102,12 +91,6 @@ export function settingsView(ctx) {
 
       root.querySelector('#series')?.addEventListener('change', (e) => ctx.switchSeries(e.target.value));
 
-      root.querySelector('#reset').addEventListener('click', () => {
-        if (confirm(`Clear your reading progress for ${series.title}? Notes are kept.`)) {
-          progress.reset(series.id);
-          ctx.onProgressChange();
-        }
-      });
     },
   };
 }

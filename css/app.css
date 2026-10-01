@@ -381,4 +381,6 @@ main:focus, main:focus-visible { outline: none; }
   main { padding-left: 12px; padding-right: 12px; }
   .card { padding: 20px 14px; }
 }
-.cal-note { text-align: center; margin: 0; }
+.cal-buttons { display: grid; gap: 10px; }
+.cal-buttons .btn { width: 100%; }
+.cal-note { text-align: center; margin: 10px 0 0; }

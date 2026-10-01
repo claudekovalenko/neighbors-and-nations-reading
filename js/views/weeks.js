@@ -1,5 +1,5 @@
 import { locate, resumesAfterBreak } from '../schedule.js';
-import { esc, ref, fmtLong, fmtShort, icon, videoBlock, spotifyBlock } from '../ui.js';
+import { esc, ref, fmtLong, fmtShort, fmtShortYear, icon, videoBlock, spotifyBlock } from '../ui.js';
 import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
 import { trackerHtml, mountTracker } from '../tracker.js';
 import { notesHtml, mountNotes } from '../notes.js';
@@ -17,11 +17,11 @@ export function weeksListView(ctx) {
     const prev = schedule[w.number - 2];
     if (w.part && w.part !== prev?.part) {
       const inPart = schedule.filter((x) => x.part === w.part);
-      const range = `${fmtShort(inPart[0].sermonDate)} – ${fmtShort(inPart.at(-1).sermonDate)}`;
+      const range = `${fmtShort(inPart[0].sermonDate)} – ${fmtShortYear(inPart.at(-1).sermonDate)}`;
       return `<li class="part-head"><h2>${esc(w.part)}</h2><span>${esc(range)}</span></li>`;
     }
     if (!w.part && resumesAfterBreak(schedule, w)) {
-      return `<li class="part-head"><span>Resumes ${esc(fmtShort(w.sermonDate))}</span></li>`;
+      return `<li class="part-head"><span>Resumes ${esc(fmtShortYear(w.sermonDate))}</span></li>`;
     }
     return '';
   };

@@ -103,7 +103,10 @@ agents learn over time. Keep each entry short and concrete.
   who taps X can find them. After X, Today briefly says "Install anytime from Settings".
 - No in-app notification reminders (they can't fire on time without a push server).
   The calendar file in Settings is the reminder.
-- Daily reminder in Settings = a time (half-hour steps) + one calendar button for
-  the person's phone: Apple Calendar on iPhone/Mac (pre-built .ics in cal/), Google
-  Calendar elsewhere, the other as a small link. Few words. After changing series
+- Daily reminder in Settings = a time (half-hour steps) + calendar buttons
+  (Apple uses the pre-built .ics in cal/). Few words. After changing series
   dates, run `npm run calendars` (a test fails if cal/ is stale).
+- Main passage button says "Read / Listen" (the passage is already in the heading).
+- No reset-progress option in Settings.
+- Show the year on dates in another year (part ranges on Weeks, e.g. "Aug 15 – Oct 24, 2027").
+- Daily reminder: let people choose — two equal buttons, Apple Calendar and Google Calendar.

@@ -8,8 +8,11 @@ export function esc(value) {
 }
 
 const fmt = (opts) => new Intl.DateTimeFormat(undefined, opts);
-export const fmtLong = (d) => fmt({ weekday: 'long', month: 'long', day: 'numeric' }).format(d);
+// Dates in another year (e.g. Part 3 in 2027) show the year.
+const otherYear = (d) => (d.getFullYear() !== new Date().getFullYear() ? { year: 'numeric' } : {});
+export const fmtLong = (d) => fmt({ weekday: 'long', month: 'long', day: 'numeric', ...otherYear(d) }).format(d);
 export const fmtShort = (d) => fmt({ month: 'short', day: 'numeric' }).format(d);
+export const fmtShortYear = (d) => fmt({ month: 'short', day: 'numeric', year: 'numeric' }).format(d);
 export const fmtWeekday = (d) => fmt({ weekday: 'short' }).format(d);
 
 const PATHS = {
