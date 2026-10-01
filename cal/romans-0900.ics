@@ -1,0 +1,54 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//N&N Sermons//EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:Romans
+BEGIN:VEVENT
+UID:romans-reading-1@nn-sermons
+DTSTAMP:20260913T000000Z
+DTSTART:20260907T090000
+DTEND:20260907T091500
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;COUNT=60
+SUMMARY:Romans: this week’s passage
+DESCRIPTION:https://claudekovalenko.github.io/romans-study-neighbors-and-n
+ ations/
+URL:https://claudekovalenko.github.io/romans-study-neighbors-and-nations/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Romans: this week’s passage
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:romans-reading-2@nn-sermons
+DTSTAMP:20260913T000000Z
+DTSTART:20270329T090000
+DTEND:20270329T091500
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;COUNT=60
+SUMMARY:Romans: this week’s passage
+DESCRIPTION:https://claudekovalenko.github.io/romans-study-neighbors-and-n
+ ations/
+URL:https://claudekovalenko.github.io/romans-study-neighbors-and-nations/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Romans: this week’s passage
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:romans-reading-3@nn-sermons
+DTSTAMP:20260913T000000Z
+DTSTART:20270809T090000
+DTEND:20270809T091500
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;COUNT=66
+SUMMARY:Romans: this week’s passage
+DESCRIPTION:https://claudekovalenko.github.io/romans-study-neighbors-and-n
+ ations/
+URL:https://claudekovalenko.github.io/romans-study-neighbors-and-nations/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Romans: this week’s passage
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

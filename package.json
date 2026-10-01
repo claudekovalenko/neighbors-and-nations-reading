@@ -10,7 +10,8 @@
     "validate": "node scripts/validate.mjs",
     "new-series": "node scripts/new-series.mjs",
     "icons": "node scripts/render-icons.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "calendars": "node scripts/calendars.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1"

@@ -1,13 +1,36 @@
 import { settings, progress } from '../store.js';
-import { buildICS, downloadFile } from '../reminders.js';
+import { REMINDER_TIMES, timeLabel, snapTime, calendarFile, googleCalendar } from '../reminders.js';
 import { ESV_COPYRIGHT, esvConfigured } from '../esv.js';
 import { config } from '../../config.js';
-import { esc, icon } from '../ui.js';
+import { esc, icon, fmtShort } from '../ui.js';
 import { installBody, isStandalone } from '../install.js';
 
 export function settingsView(ctx) {
   const s = settings.get();
   const { series, index } = ctx;
+
+  // Daily reminder: Apple Calendar on iPhone/Mac, Google Calendar elsewhere,
+  // with the other as a small link.
+  const time = snapTime(s.reminderTime);
+  const google = googleCalendar({ series, schedule: ctx.schedule, time, appUrl: config.siteUrl });
+  const apple = /iphone|ipad|ipod|macintosh/i.test(navigator.userAgent);
+  const ics = calendarFile(series.id, time);
+  const googleLink = (cls, label) => `<a class="${cls}" id="cal-google" href="${esc(google.url)}" target="_blank" rel="noopener">${label}</a>`;
+  const reminder = google ? `
+    <section class="card">
+      <h2 class="section-title">${icon('bell')} Daily reminder</h2>
+      <label class="field">Time
+        <select id="reminder-time">${REMINDER_TIMES.map((t) => `<option value="${t}" ${t === time ? 'selected' : ''}>${timeLabel(t)}</option>`).join('')}</select>
+      </label>
+      <div class="read-actions">
+        ${apple
+          ? `<a class="btn btn-primary" id="cal-apple" href="${esc(ics)}">${icon('calendar')} Add to Apple Calendar</a>
+             ${googleLink('alt-read', `Google Calendar ${icon('external')}`)}`
+          : `${googleLink('btn btn-primary', `${icon('calendar')} Add to Google Calendar`)}
+             <a class="alt-read" id="cal-other" href="${esc(ics)}" download>Other calendar app</a>`}
+      </div>
+      ${apple ? '' : `<p class="muted small cal-note">Mon–Sat until ${esc(fmtShort(google.until))}</p>`}
+    </section>` : '';
 
   // Steps for this person's browser; gone once they're in the installed app.
   const install = isStandalone() ? '' : `
@@ -35,16 +58,7 @@ export function settingsView(ctx) {
       ${install}
       ${seriesPicker}
 
-      <section class="card">
-        <h2 class="section-title">${icon('calendar')} Add to your calendar</h2>
-        <p>A daily reminder to read, in your phone’s calendar.</p>
-        <label class="field">Time <input type="time" id="reminder-time" value="${esc(s.reminderTime)}"></label>
-        <label class="switch">
-          <input type="checkbox" id="ics-sermons" checked>
-          <span>Include Sunday sermons</span>
-        </label>
-        <button id="ics" class="btn btn-secondary">${icon('calendar')} Download calendar file</button>
-      </section>
+      ${reminder}
 
       ${esvConfigured() ? `<section class="card">
         <h2 class="section-title">Reading text size</h2>
@@ -67,20 +81,9 @@ export function settingsView(ctx) {
       </footer>`,
 
     mount(root) {
-      root.querySelector('#reminder-time').addEventListener('change', (e) => {
-        if (e.target.value) settings.set({ reminderTime: e.target.value });
-      });
-
-      root.querySelector('#ics').addEventListener('click', () => {
-        const appUrl = location.href.split('#')[0];
-        const ics = buildICS({
-          series,
-          schedule: ctx.schedule,
-          time: settings.get().reminderTime,
-          appUrl,
-          sermonTime: root.querySelector('#ics-sermons').checked ? series.sermonTime || '10:00' : null,
-        });
-        downloadFile(`${series.id}-reading-plan.ics`, ics, 'text/calendar');
+      root.querySelector('#reminder-time')?.addEventListener('change', (e) => {
+        settings.set({ reminderTime: e.target.value });
+        ctx.rerender();
       });
 
       root.querySelectorAll('input[name="size"]').forEach((r) =>

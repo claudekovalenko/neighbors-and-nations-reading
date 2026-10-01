@@ -231,3 +231,19 @@ test.describe('get-the-app card', () => {
   });
 });
 
+
+test.describe('daily reminder', () => {
+  test('adds to the right calendar at the chosen time', async ({ page, request, browserName }) => {
+    await open(page, '#/settings');
+    await page.locator('#reminder-time').selectOption('06:30');
+    const apple = browserName === 'webkit';
+    const ics = page.locator(apple ? '#cal-apple' : '#cal-other');
+    await expect(ics).toHaveAttribute('href', 'cal/romans-0630.ics');
+    const google = page.locator('#cal-google');
+    await expect(google).toHaveAttribute('href', /calendar\.google\.com.*T063000/);
+    if (!apple) await expect(google).toHaveClass(/btn-primary/);
+    const file = await request.get('/cal/romans-0630.ics');
+    expect(file.ok()).toBe(true);
+    expect(await file.text()).toContain('DTSTART:20260907T063000');
+  });
+});

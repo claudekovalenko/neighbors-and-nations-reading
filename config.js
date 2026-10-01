@@ -4,7 +4,10 @@ export const config = {
   church: 'Neighbors and Nations Church',
 
   // Shown in Settings. Keep in step with VERSION in sw.js (a test checks).
-  version: '30',
+  version: '31',
+
+  // The live site. Calendar reminders link back here.
+  siteUrl: 'https://claudekovalenko.github.io/romans-study-neighbors-and-nations/',
 
   // Lists every series and which one opens by default.
   seriesIndex: './series/index.json',
