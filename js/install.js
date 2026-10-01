@@ -1,5 +1,5 @@
 // "Get the app": shown at the top of Today in a browser (never inside the
-// installed app) and in Settings. Where the browser allows it (Chrome/Edge on
+// installed app) and on the Reminder tab. Where the browser allows it (Chrome/Edge on
 // Android and computers) it's a one-tap Install button; everywhere else it's
 // the browser's own steps, with its own symbols, in as few words as possible.
 // iPhones can't install from a button at all (Apple doesn't allow it).
@@ -85,7 +85,7 @@ export function installCardHtml(ctx) {
   if (isStandalone()) return '';
   if (justDismissed) {
     justDismissed = false;
-    return '<p class="install-hint install-moved">Install anytime from <a href="#/settings">Settings</a>.</p>';
+    return '<p class="install-hint install-moved">Install steps are under <a href="#/settings">Reminder</a>.</p>';
   }
   if (settings.get().installDismissed) return '';
   return `

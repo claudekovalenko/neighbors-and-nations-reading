@@ -59,14 +59,14 @@ export function settingsView(ctx) {
     </section>` : '';
 
   return {
-    title: 'Settings',
+    title: 'Reminder',
     html: `
-      <header class="page-head"><h1>Settings</h1></header>
+      <header class="page-head"><h1>Reminder</h1></header>
 
-      ${install}
       ${seriesPicker}
 
       ${reminder}
+      ${install}
 
       ${esvConfigured() ? `<section class="card">
         <h2 class="section-title">Reading text size</h2>

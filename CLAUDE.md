@@ -116,3 +116,5 @@ agents learn over time. Keep each entry short and concrete.
   .ics); a home-screen iPhone app hands the file to Safari (x-safari-https).
 - Live link: https://claudekovalenko.github.io/neighbors-and-nations-reading/ (repo renamed
   from romans-study-neighbors-and-nations in v35; old home-screen installs must be re-added).
+- The third tab is "Reminder" (bell icon), not Settings: daily reminder first, then install
+  steps (hidden once installed), version at the bottom. Route stays #/settings.

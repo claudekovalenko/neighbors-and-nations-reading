@@ -17,7 +17,7 @@ const SCREENS = [
   ['Weeks', '#/weeks'],
   ['Week 4', '#/week/4'],
   ['Week 31 (recap)', '#/week/31'],
-  ['Settings', '#/settings'],
+  ['Reminder', '#/settings'],
   ['Not found', '#/nope'],
 ];
 
@@ -188,7 +188,7 @@ test.describe('things people tap', () => {
     await page.getByRole('link', { name: /All weeks/ }).click();
     await expect(page.locator('h1')).toHaveText('All weeks');
     await page.locator('.tabbar a[data-tab="settings"]').click();
-    await expect(page.locator('h1')).toHaveText('Settings');
+    await expect(page.locator('h1')).toHaveText('Reminder');
     await expect(page.locator('.tabbar a[aria-current="page"]')).toHaveAttribute('data-tab', 'settings');
     await page.locator('.tabbar a[data-tab="today"]').click();
     await expect(page.locator('.hero h1')).toHaveText('Romans');
