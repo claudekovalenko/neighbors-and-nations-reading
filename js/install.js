@@ -13,8 +13,12 @@ export const isIOS = () =>
   /iphone|ipad|ipod/i.test(navigator.userAgent) ||
   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS
 
-const SHARE_ICON =
+// Drawn like the iPhone's own Share and Add to Home Screen symbols.
+export const SHARE_ICON =
   '<svg class="icon share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-label="Share"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+
+export const ADD_ICON =
+  '<svg class="icon add-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
 
 export function installCardHtml(ctx) {
   if (isStandalone() || settings.get().installDismissed) return '';
@@ -28,7 +32,7 @@ export function installCardHtml(ctx) {
     body = `
       <ol class="install-steps">
         <li>Tap ${SHARE_ICON} <strong>Share</strong> <span class="install-hint">(or <strong>•••</strong> first)</span></li>
-        <li>Scroll to <strong>Add to Home Screen</strong></li>
+        <li>Scroll to ${ADD_ICON} <strong>Add to Home Screen</strong></li>
       </ol>`;
   } else {
     body = `
