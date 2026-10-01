@@ -27,8 +27,8 @@ export function installCardHtml(ctx) {
   } else if (isIOS()) {
     body = `
       <ol class="install-steps">
-        <li>Tap ${SHARE_ICON} <strong>Share</strong> in Safari <span class="install-hint">(on newer iPhones, tap <strong>•••</strong> first)</span></li>
-        <li>Scroll down or tap <strong>More</strong>, then choose <strong>Add to Home Screen</strong></li>
+        <li>Tap ${SHARE_ICON} <strong>Share</strong> <span class="install-hint">(or <strong>•••</strong> first)</span></li>
+        <li>Scroll to <strong>Add to Home Screen</strong></li>
       </ol>`;
   } else {
     body = `

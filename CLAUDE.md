@@ -95,3 +95,4 @@ agents learn over time. Keep each entry short and concrete.
 - Browsers show a 'Get the app' card on Today (js/install.js): one-tap Install on
   Android/Chrome, Share → Add to Home Screen steps on iPhone. Hidden in the
   installed app and after 'Not now'.
+- Instructions use as few words as possible (e.g. iPhone install: "Tap Share (or ••• first)" / "Scroll to Add to Home Screen").
