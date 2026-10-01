@@ -170,10 +170,9 @@ main {
 .small { font-size: .85rem; }
 .passage { font-family: var(--serif); }
 
-.hero { padding: 12px 0 20px; }
+.hero { padding: 12px 0 18px; }
 .hero h1 { font-size: clamp(2.3rem, 10.5vw, 2.8rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1; margin-bottom: .32em; }
-.rule { display: block; width: 28px; height: 1.5px; background: var(--accent); margin: 0 0 12px; }
-.hero-date { font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--muted); margin: 0; letter-spacing: 0; }
+.rule { display: block; width: 28px; height: 1.5px; background: var(--accent); margin: 0; }
 
 .page-head { margin: 8px 0 22px; }
 .page-head h1 { font-weight: 400; }
@@ -319,6 +318,22 @@ main {
 .notes textarea:focus { outline: none; border-color: var(--accent); }
 .notes .small { margin: 8px 0 14px; }
 
+.install-card { padding: 18px 18px 20px; margin-top: 4px; }
+.install-head { display: flex; align-items: center; gap: 12px; }
+.install-head img { border-radius: 10px; flex: none; }
+.install-head > div { flex: 1; min-width: 0; }
+.install-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; margin: 0; line-height: 1.2; }
+.install-sub { font-size: .8rem; color: var(--muted); margin: 0; }
+.install-close {
+  flex: none; width: 44px; height: 44px; margin: -10px -10px -10px 0; display: grid; place-items: center;
+  background: none; border: 0; color: var(--muted); cursor: pointer; border-radius: 50%;
+}
+.install-text { font-size: .9rem; color: var(--ink-2); margin: 14px 0 12px; }
+.install-btn { width: 100%; }
+.install-steps { margin: 14px 0 0; padding: 0 0 0 1.3em; font-size: .9rem; color: var(--ink-2); display: grid; gap: 6px; }
+.install-steps li::marker { color: var(--accent-ink); font-weight: 600; }
+.install-steps strong { color: var(--ink); font-weight: 600; }
+.share-icon { width: 1.15em; height: 1.15em; vertical-align: -0.22em; color: #0a84ff; margin: 0 2px; }
 .reinstall-note { box-shadow: inset 3px 0 0 var(--accent), var(--shadow); }
 .reinstall-note p { margin: 0; }
 

@@ -27,6 +27,7 @@ export const settings = {
     reminderTime: '07:00',
     textSize: 'm',
     lastNotified: null,
+    installDismissed: false,
   },
   get() {
     return { ...this.defaults, ...read('settings', {}) };

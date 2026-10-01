@@ -4,6 +4,7 @@ import { scriptureBlock, mountScripture, copyright } from '../scripture.js';
 import { trackerHtml, mountTracker } from '../tracker.js';
 import { notesHtml, mountNotes } from '../notes.js';
 import { weekHeading } from './weeks.js';
+import { installCardHtml, mountInstall } from '../install.js';
 
 export function homeView(ctx) {
   const { series, schedule } = ctx;
@@ -17,11 +18,12 @@ export function homeView(ctx) {
       </section>`);
   }
 
+  parts.push(installCardHtml(ctx));
+
   parts.push(`
     <header class="hero">
       <h1>${esc(series.title)}</h1>
       <span class="rule" aria-hidden="true"></span>
-      <p class="hero-date">${esc(fmtLong(loc.today))}</p>
     </header>`);
 
   const cw = loc.currentWeek;
@@ -76,6 +78,7 @@ export function homeView(ctx) {
     title: series.title,
     html: parts.join(''),
     mount(root) {
+      mountInstall(root, ctx);
       mountScripture(root);
       mountTracker(root, ctx);
       if (cw) mountNotes(root, series, cw);

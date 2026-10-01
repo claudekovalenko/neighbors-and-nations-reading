@@ -154,7 +154,12 @@ async function start() {
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   ctx.installPrompt = e;
-  if (location.hash === '#/settings') ctx.rerender();
+  if (['', '#', '#/', '#/settings'].includes(location.hash)) ctx.rerender();
+});
+
+window.addEventListener('appinstalled', () => {
+  ctx.installPrompt = null;
+  ctx.rerender();
 });
 
 if ('serviceWorker' in navigator) {

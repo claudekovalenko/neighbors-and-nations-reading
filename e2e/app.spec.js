@@ -194,3 +194,35 @@ test.describe('things people tap', () => {
     await expect(page.locator('.hero h1')).toHaveText('Romans');
   });
 });
+
+test.describe('get-the-app card', () => {
+  test('shows in the browser and "Not now" hides it for good', async ({ page }) => {
+    await open(page, '#/');
+    await expect(page.locator('.install-card')).toBeVisible();
+    await page.locator('#install-dismiss').click();
+    await expect(page.locator('.install-card')).toHaveCount(0);
+    await page.reload();
+    await expect(page.locator('.hero')).toBeVisible();
+    await expect(page.locator('.install-card')).toHaveCount(0);
+  });
+
+  test('iPhone/iPad: shows the Share → Add to Home Screen steps', async ({ page, browserName, isMobile }) => {
+    test.skip(browserName !== 'webkit' || !isMobile, 'iOS only');
+    await open(page, '#/');
+    await expect(page.locator('.install-steps')).toContainText('Add to Home Screen');
+  });
+
+  test('Android: the Install button opens the install prompt', async ({ page, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Chrome only');
+    await open(page, '#/');
+    await page.evaluate(() => {
+      const e = new Event('beforeinstallprompt');
+      e.prompt = () => { window.__prompted = true; };
+      e.userChoice = Promise.resolve({ outcome: 'accepted' });
+      window.dispatchEvent(e);
+    });
+    await page.locator('#install-app').click();
+    expect(await page.evaluate(() => window.__prompted)).toBe(true);
+  });
+});
+

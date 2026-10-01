@@ -91,3 +91,7 @@ agents learn over time. Keep each entry short and concrete.
 - No series subtitle/tagline under the title. Type should be on the small,
   refined side (15px body, ~1.6rem passage heading, ~2.8rem title).
 - Tab bar height: about 73pt on iPhone (48pt row, 10pt above icons). Not thinner.
+- No date under the series title on Today.
+- Browsers show a 'Get the app' card on Today (js/install.js): one-tap Install on
+  Android/Chrome, Share → Add to Home Screen steps on iPhone. Hidden in the
+  installed app and after 'Not now'.
