@@ -75,7 +75,9 @@
    uses the page color. If a phone ever leaves a strip below the app (iOS 26
    home-screen apps installed with the old translucent status bar did), it
    reads as part of the tab bar rather than a gap. */
-html { -webkit-text-size-adjust: 100%; height: 100%; background: var(--surface); }
+html { -webkit-text-size-adjust: 100%; height: 100%; background: var(--surface); -webkit-tap-highlight-color: transparent; }
+/* Taps respond at once (no double-tap-zoom wait). */
+a, button, label, summary, select { touch-action: manipulation; }
 
 /* App-style layout: app bar on top, tab bar on the bottom, and only the
    middle (main) scrolls, so the tab bar sits in exactly the same place on
@@ -138,7 +140,16 @@ p { margin: 0 0 .8em; }
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
   color: var(--muted); text-decoration: none; font-size: .66rem; font-weight: 500; letter-spacing: .02em;
 }
-.tabbar a .icon { width: 23px; height: 23px; stroke-width: 1.6; }
+.tabbar a .icon { width: 23px; height: 23px; stroke-width: 1.6; transition: transform .14s ease, color .15s ease; }
+/* App-like tabs: no text selection or long-press menu, a soft press. */
+.tabbar { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.tabbar a { transition: color .15s ease; }
+.tabbar a:active .icon { transform: scale(.86); }
+/* A new screen eases in instead of popping. */
+@media (prefers-reduced-motion: no-preference) {
+  main.page-enter > * { animation: page-in .2s ease-out both; }
+}
+@keyframes page-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .tabbar a[aria-current] { color: var(--ink); }
 .tabbar a[aria-current] .icon { color: var(--accent); }
 

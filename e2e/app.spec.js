@@ -256,3 +256,11 @@ test.describe('daily reminder', () => {
     }
   });
 });
+
+test('tabs: tapping the current tab scrolls back to the top', async ({ page }) => {
+  await open(page, '#/weeks');
+  await page.locator('main').evaluate((m) => m.scrollTo(0, 600));
+  await page.locator('.tabbar a[data-tab="weeks"]').click();
+  await expect.poll(() => page.locator('main').evaluate((m) => m.scrollTop)).toBe(0);
+  await expect(page.locator('h1')).toHaveText('All weeks');
+});

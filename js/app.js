@@ -103,6 +103,11 @@ function render({ keepScroll = false } = {}) {
   if (!keepScroll && path !== lastPath) {
     main.scrollTo(0, 0); // main is the scrolling area, not the window
     main.focus({ preventScroll: true });
+    if (lastPath !== null) {
+      main.classList.remove('page-enter');
+      void main.offsetWidth; // restart the ease-in
+      main.classList.add('page-enter');
+    }
   }
   lastPath = path;
 }
@@ -138,6 +143,25 @@ async function start() {
     return;
   }
   window.addEventListener('hashchange', () => render());
+  main.addEventListener('animationend', () => main.classList.remove('page-enter'));
+  // Tabs: highlight the tapped tab right away; tapping the current tab
+  // scrolls back to the top, like other apps.
+  document.querySelector('.tabbar').addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const here = (location.hash || '#/') === a.getAttribute('href');
+    if (here) {
+      e.preventDefault();
+      main.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    document.querySelectorAll('.tabbar a').forEach((t) => {
+      if (t === a) t.setAttribute('aria-current', 'page');
+      else t.removeAttribute('aria-current');
+    });
+  });
+  // Lets iPhone show the :active press effect.
+  document.addEventListener('touchstart', () => {}, { passive: true });
   render();
   badge();
   document.addEventListener('visibilitychange', () => {

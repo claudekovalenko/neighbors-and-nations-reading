@@ -118,3 +118,5 @@ agents learn over time. Keep each entry short and concrete.
   from romans-study-neighbors-and-nations in v35; old home-screen installs must be re-added).
 - The third tab is "Reminder" (bell icon), not Settings: daily reminder first, then install
   steps (hidden once installed), version at the bottom. Route stays #/settings.
+- Tab taps feel app-like: no grey tap flash, no tap delay, a soft press on the icon,
+  the new screen eases in (0.2s), and tapping the current tab scrolls to the top.
