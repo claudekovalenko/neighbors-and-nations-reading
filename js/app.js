@@ -3,6 +3,8 @@ import { buildSchedule, locate, pickCurrentSeries } from './schedule.js';
 import { settings } from './store.js';
 import { updateBadge } from './reminders.js';
 import { esc } from './ui.js';
+import { trackView, trackEvent } from './analytics.js';
+import { isStandalone } from './install.js';
 import { homeView } from './views/home.js';
 import { weeksListView, weekDetailView } from './views/weeks.js';
 import { settingsView } from './views/settings.js';
@@ -109,6 +111,7 @@ function render({ keepScroll = false } = {}) {
       main.classList.add('page-enter');
     }
   }
+  if (path !== lastPath) trackView(path);
   lastPath = path;
 }
 
@@ -132,6 +135,8 @@ function detectStaleInstall() {
 }
 
 async function start() {
+  // Opened from the home-screen icon: a rough count of people who installed it.
+  if (isStandalone()) trackEvent('opened-from-home-screen');
   ctx.staleInstall = detectStaleInstall();
   applySettings();
   try {
@@ -182,6 +187,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 window.addEventListener('appinstalled', () => {
+  trackEvent('installed');
   ctx.installPrompt = null;
   ctx.rerender();
 });

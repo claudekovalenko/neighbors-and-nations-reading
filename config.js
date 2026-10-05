@@ -4,10 +4,14 @@ export const config = {
   church: 'Neighbors and Nations Church',
 
   // Shown in Settings. Keep in step with VERSION in sw.js (a test checks).
-  version: '37',
+  version: '38',
 
   // The live site. Calendar reminders link back here.
   siteUrl: 'https://claudekovalenko.github.io/neighbors-and-nations-reading/',
+
+  // Visitor counts (goatcounter.com). Put the site code here, e.g. 'nn-reading';
+  // leave empty to turn counting off.
+  analytics: { goatcounter: '' },
 
   // Lists every series and which one opens by default.
   seriesIndex: './series/index.json',

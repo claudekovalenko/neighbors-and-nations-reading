@@ -120,3 +120,5 @@ agents learn over time. Keep each entry short and concrete.
   steps (hidden once installed), version at the bottom. Route stays #/settings.
 - Tab taps feel app-like: no grey tap flash, no tap delay, a soft press on the icon,
   the new screen eases in (0.2s), and tapping the current tab scrolls to the top.
+- Visitor counts: GoatCounter (js/analytics.js), off until config.analytics.goatcounter has
+  the site code. Counts each screen and "opened-from-home-screen" (≈ installs). No cookies.
