@@ -31,7 +31,7 @@ test('calendar file: one alarmed event per reading day from today on', () => {
   const starts = [...ics.matchAll(/DTSTART:(\d{8})T073000/g)].map((m) => m[1]);
   assert.equal(starts[0], '20261001'); // today first, nothing earlier
   assert.deepEqual(starts.slice(0, 4), ['20261001', '20261002', '20261003', '20261005']); // no Sundays
-  assert.ok(ics.includes('SUMMARY:Read Romans 2:1–29'));
+  assert.ok(ics.includes('SUMMARY:Read Romans 2:1–16'));
   assert.ok(!ics.includes('RRULE'));
   assert.ok(ics.split('\r\n').every((l) => new TextEncoder().encode(l).length <= 75));
   assert.equal(buildICS({ series, schedule, time: '07:30', appUrl: '', from: new Date(2028, 0, 1) }).match(/BEGIN:VEVENT/g), null);
