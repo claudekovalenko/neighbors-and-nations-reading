@@ -163,6 +163,13 @@ main {
   /* Content column is at most 680px wide, centered. */
   padding: 12px max(20px, calc((100% - 640px) / 2)) 36px;
   outline: none;
+  position: relative;
+}
+/* Every screen can be pulled down and springs back, even when it's short
+   (a phone only allows that on content taller than the screen). */
+main::after {
+  content: ''; position: absolute; top: 0; left: 0; width: 1px;
+  height: calc(100% + 1px); pointer-events: none;
 }
 
 /* ---------- building blocks ---------- */

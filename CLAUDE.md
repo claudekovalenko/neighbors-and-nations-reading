@@ -122,3 +122,5 @@ agents learn over time. Keep each entry short and concrete.
   the new screen eases in (0.2s), and tapping the current tab scrolls to the top.
 - Visitor counts: GoatCounter (js/analytics.js), off until config.analytics.goatcounter has
   the site code. Counts each screen and "opened-from-home-screen" (≈ installs). No cookies.
+- Every screen can be pulled down and springs back (main::after makes short screens
+  1px scrollable), like the Weeks page.

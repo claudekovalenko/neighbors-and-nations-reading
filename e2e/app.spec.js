@@ -264,3 +264,11 @@ test('tabs: tapping the current tab scrolls back to the top', async ({ page }) =
   await expect.poll(() => page.locator('main').evaluate((m) => m.scrollTop)).toBe(0);
   await expect(page.locator('h1')).toHaveText('All weeks');
 });
+
+test('every screen can be pulled down, even a short one', async ({ page }) => {
+  for (const hash of ['#/', '#/settings']) {
+    await open(page, hash);
+    const [h, c] = await page.locator('main').evaluate((m) => [m.scrollHeight, m.clientHeight]);
+    expect(h).toBeGreaterThan(c);
+  }
+});
