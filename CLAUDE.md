@@ -124,3 +124,5 @@ agents learn over time. Keep each entry short and concrete.
   the site code. Counts each screen and "opened-from-home-screen" (≈ installs). No cookies.
 - Every screen can be pulled down and springs back (main::after makes short screens
   1px scrollable), like the Weeks page.
+- CI runners are pinned to ubuntu-24.04 (Playwright 1.56 can't install on 26.04). The morning
+  calendar refresh re-runs the workflow on main (scheduled runs start on the default branch).

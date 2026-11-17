@@ -7,6 +7,10 @@ name: Test & deploy
 #             screen are saved in the "device-report" download on the run.
 #   deploy  — publishes to GitHub Pages, only from main and only if both pass.
 #             Also runs every morning so the calendar files (cal/) start today.
+#   refresh — the morning run: scheduled runs start from the repo's default
+#             branch, which can't publish, so it re-runs this workflow on main.
+# Runners are pinned to ubuntu-24.04: Playwright 1.56 can't install its
+# browsers on newer Ubuntu ("ubuntu-latest" moved to 26.04 in Nov 2026).
 
 on:
   push:
@@ -26,8 +30,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  refresh:
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main')
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - run: gh workflow run deploy.yml --ref main --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   test:
-    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule' && !(github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main')
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,7 +52,8 @@ jobs:
       - run: npm run validate
 
   devices:
-    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule' && !(github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main')
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -58,7 +74,7 @@ jobs:
     # One-time setup: repo Settings → Pages → Source: "GitHub Actions".
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: [test, devices]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
