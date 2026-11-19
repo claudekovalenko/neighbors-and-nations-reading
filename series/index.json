@@ -1,6 +1,20 @@
 {
   "active": "romans",
   "series": [
-    { "id": "romans", "title": "Romans", "path": "series/romans/series.json" }
+    {
+      "id": "romans",
+      "title": "Romans",
+      "path": "series/romans/series.json"
+    },
+    {
+      "id": "advent",
+      "title": "Advent",
+      "path": "series/advent/series.json"
+    },
+    {
+      "id": "sermon-on-the-mount",
+      "title": "Sermon on the Mount",
+      "path": "series/sermon-on-the-mount/series.json"
+    }
   ]
 }

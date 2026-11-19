@@ -4,7 +4,7 @@ export const config = {
   church: 'Neighbors and Nations Church',
 
   // Shown in Settings. Keep in step with VERSION in sw.js (a test checks).
-  version: '40',
+  version: '41',
 
   // The live site. Calendar reminders link back here.
   siteUrl: 'https://claudekovalenko.github.io/neighbors-and-nations-reading/',

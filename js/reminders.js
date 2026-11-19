@@ -38,6 +38,8 @@ export function snapTime(hhmm = '07:00') {
   return `${pad(Math.floor(mins / 60))}:${pad(mins % 60)}`;
 }
 
+// One calendar file per reminder time, with every series in it.
+export const PLAN_FILE = 'reading-plan';
 export const calendarFile = (seriesId, time) => `cal/${seriesId}-${time.replace(':', '')}.ics`;
 
 // Stretches of reading days with no gap longer than a weekend.
@@ -89,11 +91,16 @@ function fold(line) {
 // One event per reading day from `from` on, titled with that week's passage,
 // with an alert at the chosen time. (Plain events, not repeating rules:
 // every calendar shows and imports them the same way.)
-export function buildICS({ series, schedule, time, appUrl, from = new Date() }) {
+// `plans` is every series ({ series, schedule }), so one file covers the
+// whole year — Romans, Advent, Sermon on the Mount — in date order.
+export function buildICS({ plans, series, schedule, time, appUrl, from = new Date() }) {
+  plans ??= [{ series, schedule }];
   const start = startOfDay(from);
   const stamp = `${ymd(start)}T000000Z`;
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//N&N Reading Plan//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:${icsEscape(series.title)}`];
-  for (const day of schedule.flatMap((w) => w.days).sort((a, b) => a.date - b.date)) {
+  const name = plans.length === 1 ? plans[0].series.title : 'N&N Reading Plan';
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//N&N Reading Plan//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', `X-WR-CALNAME:${icsEscape(name)}`];
+  const days = plans.flatMap(({ series, schedule }) => schedule.flatMap((w) => w.days).map((day) => ({ day, series })));
+  for (const { day, series } of days.sort((a, b) => a.day.date - b.day.date)) {
     if (day.date < start) continue;
     const [dtStart, dtEnd] = eventTimes(day.date, time);
     const title = `Read ${dash(day.passage) || series.title}`;

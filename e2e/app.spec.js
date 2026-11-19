@@ -7,7 +7,9 @@ import { test, expect } from '@playwright/test';
 const DATES = {
   midweek: '2026-09-29T09:00:00', // Tuesday, Romans week 4
   sunday: '2026-10-04T09:00:00',
-  romansBreak: '2026-12-08T09:00:00', // between Romans parts 1 and 2
+  romansBreak: '2027-03-09T09:00:00', // after Sermon on the Mount, before Romans part 2
+  advent: '2026-12-08T09:00:00', // Advent, between Romans parts 1 and 2
+  sermonOnMount: '2027-01-06T09:00:00', // Sermon on the Mount, week 2
   before: '2026-09-01T09:00:00',
   after: '2028-01-01T09:00:00',
 };
@@ -133,6 +135,18 @@ test.describe('shows the right thing for the date', () => {
     await expect(page.locator('main')).toContainText('April 4');
   });
 
+  test('Advent: shows the Advent passage between Romans parts', async ({ page }) => {
+    await open(page, '#/', { when: 'advent' });
+    await expect(page.locator('.hero h1')).toHaveText('Advent');
+    await expect(page.locator('.card-feature h2')).toHaveText('Luke 1:26–56');
+  });
+
+  test('January: Sermon on the Mount', async ({ page }) => {
+    await open(page, '#/', { when: 'sermonOnMount' });
+    await expect(page.locator('.hero h1')).toHaveText('Sermon on the Mount');
+    await expect(page.locator('.card-feature h2')).toHaveText('Matthew 5:13–16');
+  });
+
   test('before the series starts', async ({ page }) => {
     await open(page, '#/', { when: 'before' });
     await expect(page.locator('.card-feature .eyebrow')).toContainText('Starts');
@@ -236,7 +250,7 @@ test.describe('daily reminder', () => {
   test('calendar buttons use the chosen time; the file starts today', async ({ page, request, isMobile, browserName }) => {
     await open(page, '#/settings');
     await page.locator('#reminder-time').selectOption('06:30');
-    await expect(page.locator('#cal-apple')).toHaveAttribute('href', 'cal/romans-0630.ics');
+    await expect(page.locator('#cal-apple')).toHaveAttribute('href', 'cal/reading-plan-0630.ics');
     const iphone = browserName === 'webkit' && isMobile;
     if (iphone) {
       await expect(page.locator('#cal-apple')).toHaveText(/Add to Calendar/);
@@ -244,7 +258,7 @@ test.describe('daily reminder', () => {
     } else {
       await expect(page.locator('#cal-google')).toHaveAttribute('href', /calendar\.google\.com.*T063000/);
     }
-    const file = await request.get('/cal/romans-0630.ics');
+    const file = await request.get('/cal/reading-plan-0630.ics');
     expect(file.ok()).toBe(true);
     const text = await file.text();
     const first = text.match(/DTSTART:(\d{8})T063000/)?.[1];

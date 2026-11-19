@@ -62,5 +62,11 @@ test('reminder times snap to the offered half hours', () => {
 test('npm run calendars builds one file per offered time', () => {
   const files = calendarFiles(new Date(2026, 9, 1));
   assert.equal(Object.keys(files).length, 35);
-  assert.ok(files['cal/romans-0700.ics'].includes('DTSTART:20261001T070000'));
+  const ics = files['cal/reading-plan-0700.ics'];
+  assert.ok(ics.includes('DTSTART:20261001T070000'));
+  // Every series is in the one file, in date order.
+  assert.ok(ics.includes('SUMMARY:Read Luke 1:1–25'));
+  assert.ok(ics.includes('SUMMARY:Read Matthew 7:13–29'));
+  assert.ok(ics.indexOf('Read Luke 2:22–38') < ics.indexOf('Read Matthew 5:1–12'));
+  assert.ok(ics.indexOf('Read Matthew 7:13–29') < ics.indexOf('Read Romans 6:15–23'));
 });

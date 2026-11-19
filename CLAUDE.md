@@ -126,3 +126,7 @@ agents learn over time. Keep each entry short and concrete.
   1px scrollable), like the Weeks page.
 - CI runners are pinned to ubuntu-24.04 (Playwright 1.56 can't install on 26.04). The morning
   calendar refresh re-runs the workflow on main (scheduled runs start on the default branch).
+- Series from the church PDF: Romans (3 parts), Advent (Luke, Dec 6–27 2026), Sermon on the
+  Mount (Matthew, Jan 3–Feb 28 2027). The app shows whichever is current; no series picker.
+  One calendar file (cal/reading-plan-HHMM.ics) covers every series. Easter/Thanksgiving/Vision
+  have no passages in the PDF yet.

@@ -1,5 +1,5 @@
 import { settings } from '../store.js';
-import { REMINDER_TIMES, timeLabel, snapTime, calendarFile, googleCalendar } from '../reminders.js';
+import { REMINDER_TIMES, timeLabel, snapTime, calendarFile, googleCalendar, PLAN_FILE } from '../reminders.js';
 import { ESV_COPYRIGHT, esvConfigured } from '../esv.js';
 import { config } from '../../config.js';
 import { esc, icon, fmtShort } from '../ui.js';
@@ -7,7 +7,7 @@ import { installBody, isStandalone, isIOS } from '../install.js';
 
 export function settingsView(ctx) {
   const s = settings.get();
-  const { series, index } = ctx;
+  const { series } = ctx;
 
   // Daily reminder. iPhone/iPad: one button that opens the calendar file
   // (iPhone's Calendar shows "Add All"; Google's add-event link doesn't
@@ -15,7 +15,7 @@ export function settingsView(ctx) {
   // Outlook or Samsung.
   const time = snapTime(s.reminderTime);
   const google = googleCalendar({ series, schedule: ctx.schedule, time, appUrl: config.siteUrl });
-  const ics = calendarFile(series.id, time);
+  const ics = calendarFile(PLAN_FILE, time);
   // A home-screen iPhone app can't open calendar files itself; hand it to Safari.
   const icsHref = isIOS() && isStandalone() ? `x-safari-${new URL(ics, config.siteUrl).href}` : ics;
   const timePicker = `
@@ -47,23 +47,12 @@ export function settingsView(ctx) {
       ${installBody(ctx, 'install')}
     </section>`;
 
-  const seriesPicker = index.series.length > 1 ? `
-    <section class="card">
-      <h2 class="section-title">Series</h2>
-      <div class="field">
-        <select id="series" aria-label="Series to show">
-          <option value="" ${!s.seriesId ? 'selected' : ''}>Automatic — current series</option>
-          ${index.series.map((e) => `<option value="${esc(e.id)}" ${e.id === s.seriesId ? 'selected' : ''}>${esc(e.title ?? e.id)}</option>`).join('')}
-        </select>
-      </div>
-    </section>` : '';
 
   return {
     title: 'Reminder',
     html: `
       <header class="page-head"><h1>Reminder</h1></header>
 
-      ${seriesPicker}
 
       ${reminder}
       ${install}
@@ -102,7 +91,6 @@ export function settingsView(ctx) {
         ctx.rerender();
       });
 
-      root.querySelector('#series')?.addEventListener('change', (e) => ctx.switchSeries(e.target.value));
 
     },
   };
